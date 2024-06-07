@@ -1,0 +1,136 @@
+>>> %run llm
+>>> rag()
+['Python is a programming language.']
+>>> %run llm
+>>> rag()
+>>> %run llm
+>>> %run llm
+>>> rag()
+['Python is a high-level, interpreted programming language that is designed for ease of reading and with an emphasis on code readability. It is often used for scientific computing, data analysis, web development, artificial intelligence, and machine learning. Python is known for its simplicity and flexibility, making it a popular choice for beginners and experts alike.']
+>>> db
+>>> from search_engine import VectorDB
+>>> db = VectorDB()
+>>> hist -o -p
+>>> rag(model='auto')
+['Python is a high-level programming language that is known for its simplicity and readability. It was created by Guido van Rossum in 1989 and is widely used in various applications, including web development, data science, and artificial intelligence. Python is considered to be a fast language due to its efficient execution and ability to handle large datasets.']
+>>> MODELS
+('meta-llama/llama-2-13b-chat',
+ 'openai/gpt-3.5-turbo',
+ 'open-orca/mistral-7b-openorca',
+ 'mistralai/mistral-7b-instruct')
+>>> rag(model=MODELS[0])
+['Python is a programming language.']
+>>> rag(model=MODELS[1])
+['Python is a high-level, interpreted programming language that emphasizes simplicity and readability. It was created by Guido van Rossum in the late 1980s and has since become a popular language for web development, data analysis, artificial intelligence, and other applications. Python is known for its speed and efficiency, as well as its large and active community of users and developers who contribute to its growth and development.']
+>>> rag(model=MODELS[2])
+['Python is a high-level, interpreted programming language that is known for its simplicity and readability. It was created by Guido van Rossum in the late 1980s and has since become a popular choice for web development, data analysis, and artificial intelligence. Python is often praised for its speed, particularly in comparison to other interpreted languages.']
+>>> rag(model=MODELS[3])
+['Python is a programming language.']
+>>> len(MODELS)
+4
+>>> %run llm
+>>> MODELS[-1]
+'mistralai/mistral-7b-instruct'
+>>> len(MODELS)
+5
+>>> for model in MODELS:
+...     rag(model=model, context="A Python is Fast.")
+...
+>>> answers = []
+... for model in MODELS:
+...     answers.append(rag(model=model, context="A Python is Fast."))
+...
+>>> answers
+[['Python is a fast animal.'],
+ ['Python is a type of snake.'],
+ ['Python is a fast animal.'],
+ ['Python is a type of snake.'],
+ ['Python is a fast animal.']]
+>>> answers = []
+... for model in MODELS:
+...     answers.append(rag(model=model, context="Python is Fast."))
+...
+>>> answers
+[['Python is a programming language.'],
+ ['Python is a fast programming language.'],
+ ['Python is a fast programming language.'],
+ ['Python is a programming language.'],
+ ['Python is a programming language.']]
+>>> answers = []
+... for model in MODELS:
+...     answers.append(rag(model=model, context="Python is fast."))
+...
+>>> 
+... for model in MODELS:
+...     kwargs = dict(
+...         context='Python is fast.',
+...         question='What is Python?',
+...         model=model)
+...     kwargs.update(dict(answer=rag(**kwargs)[0]))
+...     answers.append(kwargs)
+...
+>>> pd.DataFrame(answers)
+>>> import pandas as pd
+>>> pd.DataFrame(answers)
+                                                   0         1      2       3
+0  Python is a fast-paced language.\n\nReference(...      None   None    None
+1    Python is a fast computer programming language.      None   None    None
+2             Python is a fast programming language.      None   None    None
+3                  Python is a programming language.      None   None    None
+4  Python is fast.\n\nPython is a high-level, int...      None   None    None
+5                                            context  question  model  answer
+6                                            context  question  model  answer
+7                                            context  question  model  answer
+8                                            context  question  model  answer
+9                                            context  question  model  answer
+>>> answers = []
+... for model in MODELS:
+...     kwargs = dict(
+...         context='Python is fast.',
+...         question='What is Python?',
+...         model=model,
+...         )
+...     ans=rag(**kwargs)
+...     print(ans)
+...     kwargs.update(dict(answer=ans[0]))
+...     print(kwargs)
+...     answers.append(kwargs)
+...     print(pd.DataFrame(answers))
+...
+>>> for model in MODELS:
+...     kwargs = dict(
+...         context='Python is fast?',
+...         question='What is Python?',
+...         model=model,
+...         )
+...     ans=rag(**kwargs)
+...     kwargs.update(dict(answer=ans[0]))
+...     answers.append(kwargs)
+...     print(pd.DataFrame(answers))
+...
+>>> for model in MODELS:
+...     kwargs = dict(
+...         context='Python is fast?',
+...         question='What is Python?',
+...         model=model,
+...         )
+...     ans=rag(**kwargs)
+...     kwargs.update(dict(answer=ans[0]))
+...     answers.append(kwargs)
+...     df = pd.DataFrame(answers)
+...     print(df.iloc[-1])
+...
+>>> for model in MODELS:
+...     kwargs = dict(
+...         context='Python is fast?',
+...         question='What is Python?',
+...         model=model,
+...         )
+...     ans=rag(**kwargs)
+...     kwargs.update(dict(answer=ans[0]))
+...     answers.append(kwargs)
+...     df = pd.DataFrame(answers)
+...     print(df.iloc[-1])
+...     print()
+...
+>>> hist -o -p -f test_llms_question_mark.hist.ipy

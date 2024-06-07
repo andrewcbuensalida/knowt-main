@@ -1,0 +1,116 @@
+>>> from search_engine import *
+>>> db = VectorDB()
+>>> db.search('What is a Python function?')
+                                               filename                                           sentence  line_number  ...  len  num_tokens  relevance
+3305  /home/hobs/code/tangibleai/community/vector-se...  Functions that return values are sometimes cal...          153  ...   75          16   0.654429
+3939  /home/hobs/code/tangibleai/community/vector-se...  method[¶](#term-method "Permalink to this term...          239  ...  357          61   0.660996
+3781  /home/hobs/code/tangibleai/community/vector-se...  Just to emphasize that hello is a variable lik...          210  ...  215          47   0.663736
+3798  /home/hobs/code/tangibleai/community/vector-se...  -   [A mathematical expression that calculates...          253  ...  275          49   0.671340
+483   /home/hobs/code/tangibleai/community/vector-se...  Functions are themselves just objects.\n If yo...          266  ...   38           7   0.677403
+3081  /home/hobs/code/tangibleai/community/vector-se...  We have done it here to illustrate an importan...          162  ...   97          21   0.680931
+640   /home/hobs/code/tangibleai/community/vector-se...  This is analogous to the potential confusion o...          211  ...  108          22   0.692508
+6089  /home/hobs/code/tangibleai/community/vector-se...  In Python, functions are "first class" objects...          127  ...  100          23   0.713341
+3488  /home/hobs/code/tangibleai/community/vector-se...  A function that returns a value is producing a...          162  ...  156          37   0.721921
+484   /home/hobs/code/tangibleai/community/vector-se...  If you tell Python to print the function objec...          267  ...  175          37   0.733950
+
+[10 rows x 8 columns]
+>>> who
+>>> dir(db)
+['__class__',
+ '__delattr__',
+ '__dict__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__le__',
+ '__lt__',
+ '__module__',
+ '__ne__',
+ '__new__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__sizeof__',
+ '__str__',
+ '__subclasshook__',
+ '__weakref__',
+ 'cli',
+ 'df',
+ 'df_path',
+ 'embeddings',
+ 'embeddings_path',
+ 'limit',
+ 'lsh',
+ 'n_sentence_embeddings',
+ 'preprocess_query',
+ 'search']
+>>> db.cli()
+>>> from llm import *
+>>> rag = RAG()
+>>> rag.ask('What is a list comprehension?')
+ChatCompletionMessage(content='A list comprehension is a concise way to create a new list from another list by expressing a mapping and/or filtering operation. It consists of a for loop and an optional if clause that filters the elements of a sequence. The general syntax is:\n\n[transformer\\_expression for loop\\_var in sequence if filtration\\_expression]\n\nThis is a concise way to create a new list from another list. Many programmers find list comprehensions easier to understand and write.', role='assistant', function_call=None, tool_calls=None)
+>>> rag.hist
+[{'question': 'What is a list comprehension?',
+  'context': 'A list is a sequence whose items can be any kind of Python object.\n Actually, the for loop is a little more general.\nPython also provides a new syntax, called **list comprehensions**, that lets you express a mapping and/or filtering operation.\n Just as with named functions and lambda expressions, some students seem to find it easier to think in terms of the map and filter functions, while other students find it easier to read and write list comprehensions.\nThe values that make up a list are called its **elements**.\n Lists are similar to strings, which are ordered collections of characters, except that the elements of a list can have any type and for any one list, the items can be of different types.\nIn fact, the items in a list can be any type of python object.\n For example, we can have a list of lists.\nIn this course, you can choose to learn to write list comprehensions or to use map and filter, whichever you prefer.\n You should learn to read both list comprehensions and map/filter.\nYou should learn to read both list comprehensions and map/filter.\n Other common accumulator patterns on lists aggregate all the values into a single value.\nA string is a sequence whose items are single characters.\n A list is a sequence whose items can be any kind of Python object.\nList comprehensions are concise ways to create lists from other lists.\n The general syntax is:  ::: {.highlight-default .notranslate} ::: {.highlight}     [<transformer_expression> for <loop_var> in <sequence> if <filtration_expression>] ::: :::  where the if clause is optional.\nMany programmers find them easier to understand and write.\n List comprehensions are concise ways to create lists from other lists.\nMost python programmers use list comprehensions, so make sure you learn to read those.\n In this course, you can choose to learn to write list comprehensions or to use map and filter, whichever you prefer.',
+  'prompt_template': 'You are an elementary school student answering questions on a reading comprehension test. Your answers must only contain information from the passage of TEXT provided. Read the following TEXT and answer the QUESTION below the text as succinctly as possible. Do not add any information or embelish your answer. You will be penalized if your ANSWER includes any information not contained in the passage of TEXT provided above the QUESTION. \n\nTEXT: {context}\n\nQUESTION: {question}\n\nANSWER: ',
+  'search_results':                                                 filename                                           sentence  line_number  ...  len  num_tokens  relevance
+  5817   /home/hobs/code/tangibleai/community/vector-se...  A list is a sequence whose items can be any ki...          149  ...   66          16   0.654858
+  4876   /home/hobs/code/tangibleai/community/vector-se...  Python also provides a new syntax, called **li...          124  ...  126          27   0.655762
+  17926  /home/hobs/code/tangibleai/community/vector-se...  The values that make up a list are called its ...          162  ...   59          17   0.656956
+  912    /home/hobs/code/tangibleai/community/vector-se...  In fact, the items in a list can be any type o...          160  ...   64          17   0.662604
+  4880   /home/hobs/code/tangibleai/community/vector-se...  In this course, you can choose to learn to wri...          132  ...  116          25   0.664654
+  4881   /home/hobs/code/tangibleai/community/vector-se...  You should learn to read both list comprehensi...          133  ...   65          14   0.673446
+  5816   /home/hobs/code/tangibleai/community/vector-se...  A string is a sequence whose items are single ...          148  ...   57          12   0.675833
+  4835   /home/hobs/code/tangibleai/community/vector-se...  List comprehensions are concise ways to create...          116  ...   70          13   0.688335
+  4834   /home/hobs/code/tangibleai/community/vector-se...  Many programmers find them easier to understan...          115  ...   58          11   0.696233
+  4879   /home/hobs/code/tangibleai/community/vector-se...  Most python programmers use list comprehension...          130  ...   86          18   0.719864
+  
+  [10 rows x 8 columns],
+  'prompt': 'You are an elementary school student answering questions on a reading comprehension test. Your answers must only contain information from the passage of TEXT provided. Read the following TEXT and answer the QUESTION below the text as succinctly as possible. Do not add any information or embelish your answer. You will be penalized if your ANSWER includes any information not contained in the passage of TEXT provided above the QUESTION. \n\nTEXT: A list is a sequence whose items can be any kind of Python object.\n Actually, the for loop is a little more general.\nPython also provides a new syntax, called **list comprehensions**, that lets you express a mapping and/or filtering operation.\n Just as with named functions and lambda expressions, some students seem to find it easier to think in terms of the map and filter functions, while other students find it easier to read and write list comprehensions.\nThe values that make up a list are called its **elements**.\n Lists are similar to strings, which are ordered collections of characters, except that the elements of a list can have any type and for any one list, the items can be of different types.\nIn fact, the items in a list can be any type of python object.\n For example, we can have a list of lists.\nIn this course, you can choose to learn to write list comprehensions or to use map and filter, whichever you prefer.\n You should learn to read both list comprehensions and map/filter.\nYou should learn to read both list comprehensions and map/filter.\n Other common accumulator patterns on lists aggregate all the values into a single value.\nA string is a sequence whose items are single characters.\n A list is a sequence whose items can be any kind of Python object.\nList comprehensions are concise ways to create lists from other lists.\n The general syntax is:  ::: {.highlight-default .notranslate} ::: {.highlight}     [<transformer_expression> for <loop_var> in <sequence> if <filtration_expression>] ::: :::  where the if clause is optional.\nMany programmers find them easier to understand and write.\n List comprehensions are concise ways to create lists from other lists.\nMost python programmers use list comprehensions, so make sure you learn to read those.\n In this course, you can choose to learn to write list comprehensions or to use map and filter, whichever you prefer.\n\nQUESTION: What is a list comprehension?\n\nANSWER: ',
+  'answer': ChatCompletionMessage(content='A list comprehension is a concise way to create a new list from another list by expressing a mapping and/or filtering operation. It consists of a for loop and an optional if clause that filters the elements of a sequence. The general syntax is:\n\n[transformer\\_expression for loop\\_var in sequence if filtration\\_expression]\n\nThis is a concise way to create a new list from another list. Many programmers find list comprehensions easier to understand and write.', role='assistant', function_call=None, tool_calls=None),
+  'answer_id': 'gen-mMx2Yj8XtIc9Dac8P1xCbkgIIqcw'}]
+>>> rag.answer
+ChatCompletionMessage(content='A list comprehension is a concise way to create a new list from another list by expressing a mapping and/or filtering operation. It consists of a for loop and an optional if clause that filters the elements of a sequence. The general syntax is:\n\n[transformer\\_expression for loop\\_var in sequence if filtration\\_expression]\n\nThis is a concise way to create a new list from another list. Many programmers find list comprehensions easier to understand and write.', role='assistant', function_call=None, tool_calls=None)
+>>> rag.answer.content
+'A list comprehension is a concise way to create a new list from another list by expressing a mapping and/or filtering operation. It consists of a for loop and an optional if clause that filters the elements of a sequence. The general syntax is:\n\n[transformer\\_expression for loop\\_var in sequence if filtration\\_expression]\n\nThis is a concise way to create a new list from another list. Many programmers find list comprehensions easier to understand and write.'
+>>> rag.answer_id
+'gen-mMx2Yj8XtIc9Dac8P1xCbkgIIqcw'
+>>> rag.answer_logprob
+>>> %run llm
+>>> rag = RAG()
+>>> rag.ask('What is a function?')
+'A function is an object that defines an operation that can be performed. It takes certain information, called arguments, passed to it by the user, and works properly on a variety of possible inputs.'
+>>> rag.db
+<search_engine.VectorDB at 0x7f2bb2c44370>
+>>> rag.hist
+[{'question': 'What is a function?',
+  'context': 'If you tell Python to print the function object, rather than printing the results of invoking the function object, you\'ll get one of those not-so-nice printed representations.\n Just typing the name of the function refers to the function as an object.\nAll those items are functions.\n The first is the function square that is defined on lines 1 and 2.\nFunctions are themselves just objects.\n If you tell Python to print the function object, rather than printing the results of invoking the function object, you\'ll get one of those not-so-nice printed representations.\nSometimes, you will be presented with a function definition whose operation is not so neatly summarized as above.\n Sometimes you will need to look at the code, either the function definition or code that invokes the function, in order to figure out what it does.\nBoth are of type \'function\'.\n A function, whether named or anonymous, can be called by placing parentheses () after it.\nIn Python, functions are "first class" objects, meaning they can be treated like any other object.\n Beyond calling functions, we can also reference them, pass them as arguments to other functions, or return them.\nSometimes you will need to look at the code, either the function definition or code that invokes the function, in order to figure out what it does.\n To build your understanding of any function, you should aim to answer the following questions:  1.\n.section-number}Writing Test Cases for Functions[¶](#writing-test-cases-for-functions "Permalink to this heading"){.headerlink} ========================================================================================================================================  It is a good idea to write one or more test cases for each function that you define.\n A function defines an operation that can be performed.\nA function needs certain information to do its work.\n These values, often called **arguments** or **actual parameters** or **parameter values**, are passed to the function by the user.\nA function defines an operation that can be performed.\n If the function takes one or more parameters, it is supposed to work properly on a variety of possible inputs.',
+  'prompt_template': 'You are an elementary school student answering questions on a reading comprehension test. Your answers must only contain information from the passage of TEXT provided. Read the following TEXT and answer the QUESTION below the text as succinctly as possible. Do not add any information or embelish your answer. You will be penalized if your ANSWER includes any information not contained in the passage of TEXT provided above the QUESTION. \n\nTEXT: {context}\n\nQUESTION: {question}\n\nANSWER: ',
+  'search_results':                                                filename                                           sentence  line_number  ...  len  num_tokens  relevance
+  484   /home/hobs/code/tangibleai/community/vector-se...  If you tell Python to print the function objec...          267  ...  175          37   0.624156
+  951   /home/hobs/code/tangibleai/community/vector-se...  All those items are functions.\n The first is ...          299  ...   30           6   0.629807
+  483   /home/hobs/code/tangibleai/community/vector-se...  Functions are themselves just objects.\n If yo...          266  ...   38           7   0.636515
+  3861  /home/hobs/code/tangibleai/community/vector-se...  Sometimes, you will be presented with a functi...          184  ...  115          22   0.637908
+  6041  /home/hobs/code/tangibleai/community/vector-se...  Both are of type 'function'.\n A function, whe...          153  ...   28           8   0.641507
+  6089  /home/hobs/code/tangibleai/community/vector-se...  In Python, functions are "first class" objects...          127  ...  100          23   0.656809
+  3862  /home/hobs/code/tangibleai/community/vector-se...  Sometimes you will need to look at the code, e...          187  ...  147          32   0.659533
+  6359  /home/hobs/code/tangibleai/community/vector-se...  .section-number}Writing Test Cases for Functio...          122  ...  350         179   0.660023
+  3541  /home/hobs/code/tangibleai/community/vector-se...  A function needs certain information to do its...          153  ...   52          11   0.666757
+  6360  /home/hobs/code/tangibleai/community/vector-se...  A function defines an operation that can be pe...          126  ...   56          11   0.715178
+  
+  [10 rows x 8 columns],
+  'prompt': 'You are an elementary school student answering questions on a reading comprehension test. Your answers must only contain information from the passage of TEXT provided. Read the following TEXT and answer the QUESTION below the text as succinctly as possible. Do not add any information or embelish your answer. You will be penalized if your ANSWER includes any information not contained in the passage of TEXT provided above the QUESTION. \n\nTEXT: If you tell Python to print the function object, rather than printing the results of invoking the function object, you\'ll get one of those not-so-nice printed representations.\n Just typing the name of the function refers to the function as an object.\nAll those items are functions.\n The first is the function square that is defined on lines 1 and 2.\nFunctions are themselves just objects.\n If you tell Python to print the function object, rather than printing the results of invoking the function object, you\'ll get one of those not-so-nice printed representations.\nSometimes, you will be presented with a function definition whose operation is not so neatly summarized as above.\n Sometimes you will need to look at the code, either the function definition or code that invokes the function, in order to figure out what it does.\nBoth are of type \'function\'.\n A function, whether named or anonymous, can be called by placing parentheses () after it.\nIn Python, functions are "first class" objects, meaning they can be treated like any other object.\n Beyond calling functions, we can also reference them, pass them as arguments to other functions, or return them.\nSometimes you will need to look at the code, either the function definition or code that invokes the function, in order to figure out what it does.\n To build your understanding of any function, you should aim to answer the following questions:  1.\n.section-number}Writing Test Cases for Functions[¶](#writing-test-cases-for-functions "Permalink to this heading"){.headerlink} ========================================================================================================================================  It is a good idea to write one or more test cases for each function that you define.\n A function defines an operation that can be performed.\nA function needs certain information to do its work.\n These values, often called **arguments** or **actual parameters** or **parameter values**, are passed to the function by the user.\nA function defines an operation that can be performed.\n If the function takes one or more parameters, it is supposed to work properly on a variety of possible inputs.\n\nQUESTION: What is a function?\n\nANSWER: ',
+  'answer': 'A function is an object that defines an operation that can be performed. It takes certain information, called arguments, passed to it by the user, and works properly on a variety of possible inputs.',
+  'answer_id': 'gen-wYyfPdr9ljJrF7GKL7LYLMHHH2LQ'}]
+>>> print(rag.hist[-1]['prompt']
+... )
+...
+>>> hist -o -p -f scripts/fopp_function_list_comprehensions.hist.ipy

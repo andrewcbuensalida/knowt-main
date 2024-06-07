@@ -1,0 +1,2202 @@
+ 1/1: import pandas as pd
+ 1/2: df = pd.read_csv('people.csv')
+ 1/3: df
+ 1/4: df['first_name'] = df['# username'].str.split()[0]
+ 1/5: df['first_name'] = df['# username'].str.split().str[0]
+ 1/6: df
+ 1/7: df['last_name'] = df['# username'].str.split().str[1:]
+ 1/8: df['last_name'] = df['last_name'].str.join(' ')
+ 1/9: df
+1/10: df.columns = ['username'] + list(df.columns[1:])
+1/11: df['username'] = df['email'].str.strip(')').str[-3:]
+1/12: df
+1/13: df['username'].nunique()
+1/14: df['username'] = df['email'].str.strip(')').str[-4:]
+ 3/1: hist -g
+ 3/2:
+# create_runstone_roster.py
+import pandas as pd
+df = pd.read_csv('people.csv')
+df['username'] = df['name']
+df['first_name'] = df['username'].str.split().str[0]
+df['last_name'] = df['username'].str.split().str[1:]
+df['last_name'] = df['last_name'].str.join(' ')
+df['username'] = df['url'].str.strip(')').str[-5:]
+df['username'].nunique()
+ 3/3: df
+ 3/4: df['username'].unique()
+ 4/1: cd src
+ 6/1: ls
+ 6/2: cd scripts
+ 7/1: from dotenv import load_dotenv
+ 7/2: load_dotenv()
+ 7/3: import os
+ 7/4: env=dict(os.environ)
+ 7/5: env['CANVAS_API_TOKEN']
+ 7/6: cd scripts
+ 7/7: ls -hal
+ 7/8: more use_canvas_grab_and_runestone_export_to_join_roster.hist.py
+ 7/9: more use_canvas_grab_and_runestone_export_to_join_roster.hist.py.md
+7/10: cd ../src
+7/11: ls -hal
+7/12: cd cisc179
+7/13: ls -ahl
+7/14: more checkcanvas.py
+7/15: %run checkcanvas.py
+7/16: ENV
+7/17: nano ../../.env
+7/18: !nano ../../.env
+7/19: !nano checkcanvas.py
+7/20: %run checkcanvas.py
+7/21: who
+7/22: canvas
+7/23: canvas.get_accounts()
+7/24: list(canvas.get_accounts())
+7/25: course = canvas.get_course()
+7/26: course = canvas.get_course?
+7/27: course = canvas.get_course(CANVAS_COURSE_ID)
+7/28: course
+7/29: course.calendar
+7/30: course.friendly_name
+7/31: course.get_discussion_topics()
+7/32: list(course.get_discussion_topics())
+7/33: ls ../../scripts
+7/34: dir(canvas)
+7/35: [i for i in dir(canvas) if 'module' in i]
+7/36: [i for i in dir(canvas) if 'course' in i]
+7/37: [i for i in dir(course) if 'module' in i]
+7/38: course.get_modules()
+7/39: list(course.get_modules())
+7/40: modules = _
+7/41: len(modules)
+7/42: modules[0]
+7/43: dir(modules[0])
+7/44: modules[0].id
+7/45: modules[0].unlock_at
+7/46: modules[0].published
+7/47: modules[0].name
+7/48: modules[1].name
+7/49: modules[2].name
+7/50: modules[3].name
+7/51: modules[4].name
+7/52: modules[5].name
+7/53: pwd
+7/54: hist -o -p -f test_module_upload.hist.ipy
+7/55: hist -f test_module_upload.hist.py
+ 8/1: ls -hal
+ 8/2: %run search_engine.py
+ 8/3: ls data
+ 8/4: ls data/corpus
+ 8/5: ls data/corpus/*.csv
+ 8/6: ls data/corpus/*.joblib
+ 8/7: ls data/cache/*.joblib
+ 8/8: ls data/cache/
+ 8/9: ls -hal data/corpus/*.csv
+8/10: ls -hal data/cache/*.csv
+8/11: %run search_engine.py
+8/12: %run search_engine.py
+8/13: db = VectorDB()
+8/14: %run search_engine.py
+8/15: db = VectorDB()
+8/16: %run search_engine.py
+8/17: rm data/corpus/*.joblib
+8/18: %run search_engine.py
+8/19: db
+8/20: db.embeddings
+8/21: np.ma.average(db.embeddings, axis=1, weights=[.5, .5])
+8/22: np.ma.average(db.embeddings, axis=2, weights=[.5, .5])
+8/23: np.ma.average(db.embeddings, axis=0, weights=[.5, .5])
+8/24: pd.DataFrame(db.embeddings)
+8/25: e = pd.DataFrame(db.embeddings)
+8/26: e.rolling?
+8/27: e.rolling(2)
+8/28: e.rolling(2).mean()
+8/29: m2 = e.rolling(2).mean()
+8/30: m2.shape
+8/31: e.shape
+8/32: e[0]
+8/33: e.iloc[0]
+8/34: m2.iloc[0]
+8/35: m2.iloc[1]
+8/36: e.iloc[0:2]
+8/37: query = 'what is gum disease?' ; query_embedding = model.encode([query])
+8/38:
+        if not isinstance(db.embeddings, pd.DataFrame):
+            self.embeddings = pd.DataFrame(db.embeddings)
+        self.embeddings_2 = db.embeddings.rolling(2).mean()
+8/39:
+        if not isinstance(db.embeddings, pd.DataFrame):
+            db.embeddings = pd.DataFrame(db.embeddings)
+        db.embeddings_2 = db.embeddings.rolling(2).mean()
+8/40: similarities = cosine_similarity(query_embedding, self.embeddings_2)[0]
+8/41: similarities = cosine_similarity(query_embedding, db.embeddings_2)[0]
+8/42: similarities = cosine_similarity(query_embedding, db.embeddings_2[1:])[0]
+8/43: top_indices = np.argsort(similarities)[-limit:]
+8/44: top_indices = np.argsort(similarities)[-10:]
+8/45: top_indices
+8/46: top_docs = self.df.iloc[top_indices:top_indices+1].copy()
+8/47: top_docs = db.df.iloc[top_indices:top_indices+1].copy()
+8/48: top_docs = db.df.iloc[top_indices].copy()
+8/49: top_docs2 = db.df.iloc[top_indices+1].copy()
+8/50: top_docs
+8/51: top_docs['sentence'].str + ' ' + top_docs2['sentence'].str
+8/52: top_docs['sentence'] + ' ' + top_docs2['sentence']
+8/53: top_docs['sentence']
+8/54: top_docs2['sentence']
+8/55: [s1 + ' ' + s2 for (s1, s2) in zip(top_docs['sentence'], top_docs2['sentence'])]
+8/56: %run search_engine.py
+8/57: %run search_engine.py
+ 9/1: hash('0123')
+10/1: from pathlib import Path
+10/2: IMAGES_DIR = Path('.') / 'static' / 'images'
+10/3:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        slide = f'---\n\n## {s.title()} workflow\n\n![{p.name}](/images/{p.name} "Runestone.Academy step {p.name[len('runestone-') + len(c) + 2:-4]}")\n\n'
+10/4:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        slide = f'---\n\n## {s.title()} workflow\n\n'
+        slide += f'![{p.name}](/images/{p.name} "Runestone.Academy step {p.name[len("runestone-") + len(c) + 2:-4]}")\n\n'
+        print(slide)
+10/5:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        slide = f'---\n\n## {s.title()} workflow\n\n'
+        slide += f'![{p.name}](/images/{p.name} "Runestone.Academy step {p.name[len("runestone-") + len(s) + 2:-4]}")\n\n'
+        print(slide)
+10/6:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        title = f'Runestone.Academy {s} workflow'
+        stepnum = f'p.name[len("runestone-") + len(s) + 2:-4]
+        slide = f'---\n\n## {title}\n\n'
+        slide += f'#### Step {stepnum}\n'
+        slide += f'![{p.name}](/images/{p.name} "{title} - step {stepnum}")\n\n'
+        print(slide)
+10/7:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        title = f'Runestone.Academy {s} workflow'
+        stepnum = p.name[len("runestone-") + len(s) + 2:-4]
+        slide = f'---\n\n## {title}\n\n'
+        slide += f'#### Step {stepnum}\n'
+        slide += f'![{p.name}](/images/{p.name} "{title} - step {stepnum}")\n\n'
+        print(slide)
+10/8:
+for s in 'instructor student'.split():
+    for p in IMAGES_DIR.glob(f'runestone-{s}-0*.png'):
+        title = f'Runestone.Academy {s} workflow'
+        stepnum = p.name[len("runestone-") + len(s) + 2:-4]
+        slide = f'---\n\n## {title}\n\n'
+        slide += f'#### Step {stepnum}\n'
+        slide += f'![{p.name}](/images/{p.name} "{title} - step {stepnum}")\n\n'
+        print(slide)
+10/9: ls
+10/10: pwd
+10/11: cp static/images/runestone-student-* ../2024/mesa_python.gitlab.io/static/images/
+10/12: cp static/images/runestone-instructor-* ../2024/mesa_python.gitlab.io/static/images/
+10/13: hist -f scripts/auto-generate-runestone-slides.py
+10/14: cp -r scripts/ ../2024/mesa_python.gitlab.io/
+11/1: import requests
+11/2:
+url = 'https://hackerpublicradio.org/eps/index.html'
+resp = requests.get(url)
+11/3: import bs4
+11/4: bs4.BeautifulSoup?
+11/5: bs = bs4(resp.content)
+11/6: bs = bs4.BeautifulSoup(resp.content)
+11/7: bs.attrs
+11/8: bs.keys()
+11/9: bs.keys
+11/10: type(resp.content)
+11/11: bs = bs4.BeautifulSoup(resp.text)
+11/12: bs.attrs
+11/13: bs.title
+11/14: [link.attrs for link in bs.find_all('a')]
+11/15: link.parent
+11/16: [link for link in bs.find_all('a') if link.href.startswith('./eps/hpr/')]
+11/17: links = [link for link in bs.find_all('a') if link.href and link.href.startswith('./eps/hpr/')]
+11/18: len(links)
+11/19: links = [link for link in bs.find_all('a')]
+11/20: links[0]
+11/21: links[0].href
+11/22: links[0].get('href')
+11/23: links = [link for link in bs.find_all('a') if link.get('href','').startswith('./eps/hpr/')]
+11/24: links
+11/25: links = [link.get('href') for link in bs.find_all('a') if link.get('href', '')]
+11/26: links[0]
+11/27: links[1]
+11/28: links[2]
+11/29: links[3]
+11/30: links[4]
+11/31: links[5]
+11/32: [x for x in links if x.startswith('./eps')]
+11/33: links = [link for link in bs.find_all('a') if link.get('href','').startswith('./eps/hpr')]
+11/34: links
+11/35: links[0].contents
+11/36: links[0].parent
+11/37: dict(links[0])
+11/38: dir(links[0])
+11/39: var(links[0])
+11/40: vars(links[0])
+11/41: ls -hal
+11/42: ep = links[0]
+11/43: ep.next_sibling()
+11/44: ep.next_sibling
+11/45: ep.next_sibling.next_sibling
+11/46: ep.next_sibling.next_sibling['href']
+11/47: host = ep.next_sibling.next_sibling
+11/48: host.attrs
+11/49: host.content
+11/50: host.text
+11/51: episodes = [ep['href'], ep.text, ep.next_sibling.next_sibling['href'],  for ep in bs.find_all('a') if ep.get('href','').startswith('./eps/hpr')]
+11/52: episodes = [[ep['href'], ep.text, ep.next_sibling.next_sibling['href'], ep.next_sibline.next_sibling.text]  for ep in bs.find_all('a') if ep.get('href','').startswith('./eps/hpr')]
+11/53: episodes = [[ep['href'], ep.text, ep.next_sibling.next_sibling['href'], ep.next_sibline.next_sibling.text]  for ep in bs.find_all('a') if ep.get('href','').startswith('./eps/hpr')]
+11/54: episodes = [[ep['href'], ep.text, ep.next_sibling.next_sibling['href'], ep.next_sibling.next_sibling.text]  for ep in bs.find_all('a') if ep.get('href','').startswith('./eps/hpr')]
+11/55: pd.DataFrame(episodes)
+11/56: import pandas as pd ; pd.DataFrame(episodes, columns='episode_url episode_title host_url host_username'.split())
+11/57: df = pd.DataFrame(episodes, columns='episode_url episode_title host_url host_username'.split())
+11/58: df = df.sort_values('episode_url')
+11/59: df = df.reset_index()
+11/60: df['episode_number']=df.index.values + 1
+11/61: df
+11/62: df['episode_title2'] = df['episode_title'].str.split('::').str[-1]
+11/63: df
+11/64: df['short_title'] = df['episode_title'].str.split('::').str[-1]
+11/65: df.drop('episode_title2')
+11/66: df
+11/67: df.drop(['episode_title2'])
+11/68: df['episode_title2'].drop()
+11/69: df['episode_title2'].drop('columns')
+11/70: df['episode_title2']
+11/71: del df['episode_title2']
+11/72: df
+11/73: df.columns
+11/74: del df['index']
+11/75: df
+11/76: df.columns = 'url full_title host_url host_username episode_number title'.split()
+11/77: df
+11/78: pwd
+11/79: df.to_csv('data/hpr_podcasts.csv', index=None)
+11/80: df = df['seq_num title url host_name host_url full_title'.split()]
+11/81: df = df['episode_number title url username host_url full_title'.split()]
+11/82: df = df['episode_number title url host_username host_url full_title'.split()]
+11/83: df.columns = 'seq_num title url host_name host_url full_title'.split()
+11/84: df
+11/85: df.to_csv('data/hpr_podcasts.csv', index=None)
+11/86: more data/hpr_podcasts.csv
+11/87: res = requests.get('https://hackerpublicradio.org/eps/hpr0030/')
+11/88: s = bs4.BeautifulSoup(s)
+11/89: s = bs4.BeautifulSoup(res.text)
+11/90: s
+11/91: s.findall('h1')
+11/92: s
+11/93: s.find_all('h1')
+11/94: headings = s.find_all('h1')
+11/95: headings[1].next_sibling()
+11/96: headings[1].next_sibling
+11/97: headings[1].next_sibling.next_sibling
+11/98: s.find_all('h3')
+11/99: subtitle = s.find_all('h3')[1]
+11/100: subtitle
+11/101: title = s.find_all('h1')[1]
+11/102: title
+11/103: subtitle, series = s.find_all('h3')[1:3]
+11/104: series
+11/105: title, comments = s.find_all('h1')[1:3]
+11/106: comments
+11/107: series.next_sibling
+11/108: series.next_siblings
+11/109: list(series.next_siblings)
+11/110: list(series.children)
+11/111: list(series.next_sibling.children)
+11/112: list(series.next_siblings[1].children)
+11/113: list(series.next_siblings)[1].children)
+11/114: list(series.next_siblings)[1].children
+11/115: list(list(series.next_siblings)[1].children)
+11/116: series.next
+11/117: series.next.next
+11/118: series.next.next.next
+11/119: series.next.next.next.next
+11/120: series.next.next.next.next.next
+11/121: series.next.next.next.next.next.next
+11/122: series.next.next.next.next.next.next.next
+11/123: .next
+11/124: series.next.next.next.next.next.next.next.next
+11/125: series.next.next.next.next.next.next.next.next.next
+11/126: series.next.next.next.next.next.next.next.next.next.next
+11/127: series.next.next.next.next.next.next.next.next.next.next.next
+11/128: series.next.next.next.next.next.next.next.next.next.next.next.next
+11/129: series.next.next.next.next.next.next.next.next.next.next.next.next.next
+11/130: list(series.next_siblings)[-1].next.next
+11/131: list(series.next_siblings)[-1].next
+11/132: list(series.next_siblings)[-1].next.next_sibling
+11/133: hist
+11/134: pwd
+11/135: hist -f scripts/scrape_hpr.py
+11/136: ls -hal
+11/137: hist -f scrape_hpr.py
+11/138: cp scrape_hpr.py scrape_hpr.hist.py
+11/139: df.reset_index?
+11/140: list(series.next_siblings)[-1].next.next_sibling
+11/141: list(series.next_siblings)[-1].next.next_sibling.text
+11/142: list(series.next_siblings)[-1].find('div')
+11/143: list(series.next_siblings)[-1].find_all('div')
+11/144: list(series.next_siblings)[-1].div
+11/145: vars(list(series.next_siblings)[-1])
+11/146: vars(list(series.next_siblings)[-1]).keys()
+11/147: series.parent
+11/148: series.parent.get('href')
+11/149: series.parent.find_all('href')
+11/150: series.find_all('href')
+11/151: series.find_all('a')
+11/152: series.parent.find_all('a')
+11/153: subtitle.text
+11/154: title.text
+11/155:
+    links = series.parent.find_all('a')
+    tags = [
+        a.text for a in links
+        if a.get('href', '').lstrip('.').lstrip('/').startswith('tags.html#')
+    ]
+    row = dict(full_title=title.text, subtitle=subtitle.text, show_notes=show_notes.text)
+11/156:     show_notes = list(series.next_siblings)[-1].next.next_sibling
+11/157:
+    links = series.parent.find_all('a')
+    tags = [
+        a.text for a in links
+        if a.get('href', '').lstrip('.').lstrip('/').startswith('tags.html#')
+    ]
+    row = dict(full_title=title.text, subtitle=subtitle.text, show_notes=show_notes.text)
+11/158: row
+11/159: tags
+11/160: df
+12/1: %run scrape_hpr.py
+12/2: %run scrape_hpr.py
+12/3: len(episodes)
+12/4: %run scrape_hpr.py
+12/5: series
+12/6:
+    if url.lstrip('.').lstrip('/').startswith('eps/hpr'):
+        url = '/'.join(['https://hackerpublicradio.org', url.lstrip('.').lstrip('/')])
+    resp = requests.get(url)
+    s = bs4.BeautifulSoup(resp.text)
+    title, comments = s.find_all('h1')[1:3]
+    subtitle, series = s.find_all('h3')[1:3]
+12/7: series
+12/8: series.text
+13/1: %run scrape_hpr.py
+14/1: ls *.py
+14/2: import spacy
+14/3: nlp = spacy.load('en_core_web_sm')
+14/4: nlp = spacy.load('en_core_web_md')
+14/5: nlp = spacy.load('en_core_web_sm')
+14/6: nlp('What is the capital of Kansas?')
+14/7: query_doc = nlp('What is the capital of Kansas?')
+14/8: query_doc[1].pos_
+14/9: query_doc[2].pos_
+14/10: query_doc = nlp('Who runs the capital of Kansas?')
+14/11: query_doc[1].pos_
+14/12: reversed(query_doc[:2])
+14/13: list(reversed(query_doc[:2]))
+13/2: who
+13/3: df
+13/4: import json
+13/5: js = json.dumps(episodes)
+13/6: import jsonlines
+13/7:
+with open('data/corpus/hpr_episodes.json', 'w') as fout:
+    fout.write(js)
+13/8: fout.close()
+13/9: more data/hpr_episodes.json
+13/10: more data/corpus/hpr_episodes.json
+13/11: ls data/corpus/
+13/12: mkdir corpus/hpr
+13/13: mkdir data/corpus_hpr
+13/14: ls corpus
+13/15: ls data/corpus
+13/16: mv data/corpus/hpr_episodes.json data/corpus_hpr/
+13/17: !find . -name '*.csv'
+13/18: !find ./data -name '*.csv'
+13/19: mv ./data/hpr_podcasts.csv ./data/corpus_hpr/
+13/20: !diff data/cache/nutrition_sentences.csv data/corpus/nutrition_sentences.csv
+13/21: ls -hal data/cache/nutrition_sentences.csv data/corpus/nutrition_sentences.csv
+13/22: rm data/cache/nutrition_sentences.csv
+13/23:
+import OpenAI from "openai"
+
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: $OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": $YOUR_SITE_URL, // Optional, for including your app on openrouter.ai rankings.
+    "X-Title": $YOUR_SITE_NAME, // Optional. Shows in rankings on openrouter.ai.
+  },
+  // dangerouslyAllowBrowser: true,
+})
+async function main() {
+  const completion = await openai.chat.completions.create({
+    model: "openai/gpt-3.5-turbo",
+    messages: [
+      { role: "user", content: "Say this is a test" }
+    ],
+  })
+
+  console.log(completion.choices[0].message)
+}
+main()
+16/1: import openai
+16/2: import dotenv
+16/3: dotenv.dotenv_values()
+16/4: env = dotenv.dotenv_values()
+16/5: globals().update(env)
+16/6: who
+16/7:
+import OpenAI from "openai"
+
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: $OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": $YOUR_SITE_URL, // Optional, for including your app on openrouter.ai rankings.
+    "X-Title": $YOUR_SITE_NAME, // Optional. Shows in rankings on openrouter.ai.
+  },
+  // dangerouslyAllowBrowser: true,
+})
+async function main() {
+  const completion = await openai.chat.completions.create({
+    model: "openai/gpt-3.5-turbo",
+    messages: [
+      { role: "user", content: "Say this is a test" }
+    ],
+  })
+
+  console.log(completion.choices[0].message)
+}
+main()
+16/8:
+import OpenAI from openai
+
+const openai = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: $OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": $YOUR_SITE_URL, // Optional, for including your app on openrouter.ai rankings.
+    "X-Title": $YOUR_SITE_NAME, // Optional. Shows in rankings on openrouter.ai.
+  },
+  // dangerouslyAllowBrowser: true,
+})
+async function main() {
+  const completion = await openai.chat.completions.create({
+    model: "openai/gpt-3.5-turbo",
+    messages: [
+      { role: "user", content: "Say this is a test" }
+    ],
+  })
+
+  console.log(completion.choices[0].message)
+}
+main()
+16/9:
+from openai import OpenAI
+from os import getenv
+
+# gets API Key from environment variable OPENAI_API_KEY
+client = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=getenv("OPENROUTER_API_KEY"),
+)
+
+completion = client.chat.completions.create(
+  extra_headers={
+    "HTTP-Referer": $YOUR_SITE_URL, # Optional, for including your app on openrouter.ai rankings.
+    "X-Title": $YOUR_APP_NAME, # Optional. Shows in rankings on openrouter.ai.
+  },
+  model="openai/gpt-3.5-turbo",
+  messages=[
+    {
+      "role": "user",
+      "content": "Say this is a test",
+    },
+  ],
+)
+print(completion.choices[0].message.content)
+16/10:
+from openai import OpenAI
+from os import getenv
+
+# gets API Key from environment variable OPENAI_API_KEY
+client = OpenAI(
+  base_url="https://openrouter.ai/api/v1",
+  api_key=OPEN_ROUTER_API_KEY,
+)
+
+completion = client.chat.completions.create(
+  extra_headers={
+    "HTTP-Referer": "https://qary.ai", # Optional, for including your app on openrouter.ai rankings.
+    "X-Title": "https://qary.ai", # Optional. Shows in rankings on openrouter.ai.
+  },
+  model="openai/gpt-3.5-turbo",
+  messages=[
+    {
+      "role": "user",
+      "content": "Say this is a test",
+    },
+  ],
+)
+print(completion.choices[0].message.content)
+16/11: hist -f llm.py
+13/24: !pip install langchain
+16/12: %run llm
+16/13: rag()
+16/14: %run llm
+16/15: rag()
+17/1: %run llm
+17/2: rag()
+17/3: %run llm
+17/4: rag()
+17/5: %run llm
+17/6: %run llm
+17/7: rag()
+17/8: db
+17/9: from search_engine import VectorDB
+17/10: db = VectorDB()
+18/1: %run scrape_hpr.py
+18/2: %run scrape_hpr.py
+19/1: %run scrape_hpr.py
+17/11: hist -o -p
+17/12: rag(model='auto')
+17/13: MODELS
+17/14: rag(model=MODELS[0])
+17/15: rag(model=MODELS[1])
+17/16: rag(model=MODELS[2])
+17/17: rag(model=MODELS[3])
+17/18: len(MODELS)
+17/19: %run llm
+17/20: MODELS[-1]
+17/21: len(MODELS)
+17/22:
+for model in MODELS:
+    rag(model=model, context="A Python is Fast.")
+17/23:
+answers = []
+for model in MODELS:
+    answers.append(rag(model=model, context="A Python is Fast."))
+17/24: answers
+17/25:
+answers = []
+for model in MODELS:
+    answers.append(rag(model=model, context="Python is Fast."))
+17/26: answers
+17/27:
+answers = []
+for model in MODELS:
+    answers.append(rag(model=model, context="Python is fast."))
+17/28:
+
+for model in MODELS:
+    kwargs = dict(
+        context='Python is fast.',
+        question='What is Python?',
+        model=model)
+    kwargs.update(dict(answer=rag(**kwargs)[0]))
+    answers.append(kwargs)
+17/29: pd.DataFrame(answers)
+17/30: import pandas as pd
+17/31: pd.DataFrame(answers)
+17/32:
+answers = []
+for model in MODELS:
+    kwargs = dict(
+        context='Python is fast.',
+        question='What is Python?',
+        model=model,
+        )
+    ans=rag(**kwargs)
+    print(ans)
+    kwargs.update(dict(answer=ans[0]))
+    print(kwargs)
+    answers.append(kwargs)
+    print(pd.DataFrame(answers))
+17/33:
+for model in MODELS:
+    kwargs = dict(
+        context='Python is fast?',
+        question='What is Python?',
+        model=model,
+        )
+    ans=rag(**kwargs)
+    kwargs.update(dict(answer=ans[0]))
+    answers.append(kwargs)
+    print(pd.DataFrame(answers))
+17/34:
+for model in MODELS:
+    kwargs = dict(
+        context='Python is fast?',
+        question='What is Python?',
+        model=model,
+        )
+    ans=rag(**kwargs)
+    kwargs.update(dict(answer=ans[0]))
+    answers.append(kwargs)
+    df = pd.DataFrame(answers)
+    print(df.iloc[-1])
+17/35:
+for model in MODELS:
+    kwargs = dict(
+        context='Python is fast?',
+        question='What is Python?',
+        model=model,
+        )
+    ans=rag(**kwargs)
+    kwargs.update(dict(answer=ans[0]))
+    answers.append(kwargs)
+    df = pd.DataFrame(answers)
+    print(df.iloc[-1])
+    print()
+17/36: hist -o -p -f test_llms_question_mark.hist.ipy
+17/37: hist -f test_llms_question_mark.hist.py
+17/38: df
+17/39: df.to_csv('data/test_llms.csv')
+17/40: db
+17/41: db.search('What is the best source of antioxidants?')
+17/42: df_nut = _
+17/43: df_nut
+17/44: df_nut['sentence']
+17/45: df_nut['sentence'].iloc[0]
+17/46: db.search('What is the best source of antioxidants?', preprocess=False)
+17/47: db.search?
+20/1: import pandas as pd
+20/2: pd.read_csv('data/hpr_podcasts.csv')
+20/3: df = _
+20/4: df.columns
+20/5: df.iloc[0]
+20/6: df.iloc[0]['show_notes']
+20/7: df.iloc[0]
+20/8: df.iloc[0][7]
+20/9: df.iloc[100][7]
+20/10: df.iloc[100][10]
+20/11: df.iloc[200][10]
+20/12: df.iloc[300][10]
+20/13: df.iloc[1000][10]
+20/14: df.iloc[2000][10]
+20/15: df.iloc[4000][10]
+20/16: df.iloc[4100][10]
+20/17: df.iloc[4020][10]
+21/1: from search_engine import VectorDB
+21/2: from search_engine import *
+21/3: pd.read_csv('data/hpr_podcasts.csv')
+21/4: df = _
+21/5:
+for i, row in df.iter_rows():
+    print(row.as_dict())
+21/6: columns = 'seq_num title url host_name host_url full_title'.split()
+21/7: columns += 'full_title subtitle series audio show_notes tags'.split()
+21/8: len(df.columns)
+21/9: columns
+21/10: len(columns)
+21/11: df.columns = columns
+21/12: df.head()
+21/13: df.iloc[0]
+21/14: columns[6]
+21/15: columns[6] = 'full_title_4digit'
+21/16: df.iloc[0]
+21/17: df.columns = columns
+21/18: df.iloc[0]
+21/19:
+for i, row in df.iter_rows():
+    text = f"## {row['full_title_4digit']}\n\n {row['show_notes']}'
+21/20:
+for i, row in df.iter_rows():
+    text = f"## {row['full_title_4digit']}\n\n {row['show_notes']}"
+    with open('data/hpr_corpus/{url[6:13].strip(/)}.txt') as fout:
+        fout.write(text)
+21/21:
+for i, row in df.iterrows():
+    print(f'{row["url"][6:13].strip(/)}.txt')
+    text = f"## {row['full_title_4digit']}\n\n {row['show_notes']}"
+    with open(f'data/hpr_corpus/{row["url"][6:13].strip(/)}.txt') as fout:
+        fout.write(text)
+21/22:
+for i, row in df.iterrows():
+    print(f'{row["url"][6:13].strip("/")}.txt')
+    text = f"## {row['full_title_4digit']}\n\n {row['show_notes']}"
+    with open(f'data/hpr_corpus/{row["url"][6:13].strip("/")}.txt') as fout:
+        fout.write(text)
+21/23: ls data/hpr_corpus
+21/24: ls data/
+21/25:
+for i, row in df.iterrows():
+    print(f'{row["url"][6:13].strip("/")}.txt')
+    text = f"## {row['full_title_4digit']}\n\n {row['show_notes']}"
+    with open(f'data/corpus_hpr/{row["url"][6:13].strip("/")}.txt', 'w') as fout:
+        fout.write(text)
+21/26: db = VectorDB?
+21/27: db = VectorDB(df='./data/corpus_hpr/hpr_sentences.csv')
+21/28: db = VectorDB(df=Path('./data/corpus_hpr/hpr_sentences.csv'))
+21/29: db = VectorDB()
+21/30: db.cli()
+21/31: %run llm
+21/32: who
+21/33: rag()
+21/34: df.to_csv('data/test_llms.csv')
+21/35: df
+22/1: %run llm
+22/2: who
+22/3: MODELS
+22/4: PROMPT
+22/5: print(PROMPT)
+22/6: rag('What is the healthiest fruit?', context)
+22/7: from search_engine import *
+22/8: db = VectorDB()
+22/9: db.search('What is the healthiest fruit?')
+22/10: contextdf = _
+22/11: df.columns
+22/12: df['sentence']
+22/13: df['sentences']
+22/14: df
+22/15: who
+22/16: contextdf.columns
+22/17: contextdf.iloc[0]
+22/18: '\n'.join([s for s in contextdf['sentence']])
+22/19: context = '\n'.join([s for s in contextdf['sentence']])
+22/20: rag('What is the healthiest fruit?', context=context)
+22/21: rag('How much exercise is healthiest?', context)
+22/22: q = 'How much exercise is healthiest?'
+22/23: df2 = db.search(q)
+22/24: df2.sentence.str.join('\n')
+22/25: context = '\n'.join([s for s in contextdf['sentence']])
+22/26: rag(q, context=context)
+22/27: context
+22/28: '\n'.join([s for s in df2['sentence']])
+22/29: rag(q, context=context)
+22/30: context = '\n'.join([s for s in df2['sentence']])
+22/31: print(context)
+22/32: q
+22/33: rag(q, context=context)
+22/34: !git remote -v
+23/1: ls data
+23/2: ls data/private
+23/3: from pathlib import Path
+23/4:
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+23/5: import pandas as pd
+23/6:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open())
+    dfs[p.with_suffix('').name] = df
+23/7: pd.read_excel?
+23/8:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open(), engine='xlrd')
+    dfs[p.with_suffix('').name] = df
+23/9: !pip install --upgrade xlrd
+23/10:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open())
+    dfs[p.with_suffix('').name] = df
+23/11:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open(), engine='xlrd')
+    dfs[p.with_suffix('').name] = df
+24/1: import pandas as pd
+24/2: from pathlib import Path
+24/3:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open(), engine='xlrd')
+    dfs[p.with_suffix('').name] = df
+24/4: s = p.read()
+24/5: s = p.open()
+24/6: s = s.read()
+24/7: s
+24/8: pd.read_excel?
+24/9:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open(), engine='pyopenxl')
+    dfs[p.with_suffix('').name] = df
+24/10: pd.read_excel?
+24/11:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open(), engine='openpyxl')
+    dfs[p.with_suffix('').name] = df
+24/12:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p.open().read(), engine='openpyxl')
+    dfs[p.with_suffix('').name] = df
+24/13: dfs
+24/14:
+dfs = {}
+for p in Path('./data/private/').glob('*.xls'):
+    print(p)
+    df = pd.read_excel(p, engine='openpyxl')
+25/1: %run checkcanvas.py
+25/2: ls
+25/3: %run src/cisc179/checkcanvas.py
+25/4: who
+25/5: hist | grep canvas
+25/6: [i for i in dir(canvas) if 'course' in i]
+25/7: course = canvas.get_course(CANVAS_COURSE_ID)
+25/8: list(course.get_modules())
+25/9: modules = _
+25/10: ls src/cisc179
+25/11: cp src/cisc179/test_module_upload.hist.* scripts/
+25/12: mv src/cisc179/checkcanvas.py scripts/
+25/13: rm src/cisc179/test_module_upload.hist.*
+25/14: git status
+25/15: !git status
+25/16: !git add scripts
+25/17: ls data
+25/18: git add data/public
+25/19: !git add data/public
+25/20: more data/name-url.csv
+25/21: !mv data/name-url.csv data/private/
+25/22: !git status
+25/23: !git add notes
+25/24: mv runestone-getting-started.* content/
+25/25: !git commit -m public-data-and-scripts-dir
+25/26: !git status
+25/27: mv module-00-orientation/ content/
+25/28: more content/module-00-orientation/*.json
+25/29: ls -hal content/module-00-orientation/
+25/30: git status
+25/31: !git status
+25/32: !git add content
+25/33: !git commit -am 'manually download module00 orientation banner'
+25/34: !git status
+25/35:
+dfs = {}
+for p in Path('./data/private/').glob('*.html'):
+    print(p)
+    df = pd.read_html(p)
+25/36: from pathlib import Path
+25/37: import pandas as pd
+25/38:
+dfs = {}
+for p in Path('./data/private/').glob('*.html'):
+    print(p)
+    df = pd.read_html(p)
+25/39: dfs.keys()
+25/40: dfs
+25/41: df
+25/42:
+dfs = {}
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    df = pd.read_html(p)
+    dfs[p.with_suffix('').name] = df
+25/43: dfs.keys()
+25/44: dfs['roster']
+25/45: dfs['roster'][0]
+25/46:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    dfs.extend([(name+str(i or ''), df) for (i, df) in enumerate(pd.read_html(p))])
+    dfs[p.with_suffix('').name] = df
+25/47:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    dfs.extend([(name+str(i or ''), df) for (i, df) in enumerate(pd.read_html(p))])
+25/48: d = dict(dfs)
+25/49: d
+25/50: d['roster']
+25/51: d['roster'].columns
+25/52: d['roster'].iloc[0]
+25/53: d['roster'].set_index('ID')
+25/54: df = _
+25/55: df.to_csv('data/private/roster_2024-01-27.csv')
+25/56: df = pd.read_csv('data/private/roster_2024-01-27.csv')
+25/57: df
+25/58: df = pd.read_csv('data/private/roster_2024-01-27.csv', index_col=0)
+25/59: df
+25/60: hist -f scripts/process_roster.py
+25/61: hist -f scripts/process_roster.hist.py
+25/62: hist -o -p -f scripts/process_roster.hist.ipy
+25/63: df = d['waitlist']
+25/64: addcodes = d['addcodes']
+25/65: df = pd.read_csv('data/private/roster_2024-01-27.csv', index_col=0)
+25/66: dfadd = addcodes
+25/67: dfwait = d['waitlist']
+25/68: dfwait
+25/69:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        df = df.set_index('id')
+        dfs.append((name+str(i or ''), df))
+25/70: df
+25/71: df.reset_index()
+25/72: d = dict(dfs)
+25/73: d
+25/74:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        df = df.set_index('id') if 'id' in df.columns else df.set_index('seq')
+        dfs.append((name+str(i or ''), df))
+25/75: d = dict(dfs)
+25/76: d
+25/77:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        df = df.set_index('id') if 'id' in df.columns else df.set_index('seq')
+        dfs.append((name+str(i or ''), df))
+25/78: dfadd = d['addcodes']
+25/79: dfadd.index
+25/80: 'id' in df.columns
+25/81:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        if 'id' in df.columns:
+            print('!!!!!! ID')
+            df = df.set_index('id')
+        else: 
+            df = df.set_index('seq')
+        dfs.append((name+str(i or ''), df))
+25/82: dfadd.index
+25/83: dfadd = d['addcodes']
+25/84: dfadd
+25/85:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        
+        if 'seq' in df.columns:
+            print('!!!!!! ID')
+            df = df.set_index('seq')
+        else: 
+            df = df.set_index('seq')
+        dfs.append((name+str(i or ''), df))
+25/86:
+dfs = []
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        
+        if 'seq' in df.columns:
+            print('!!!!!! Seq')
+            df = df.set_index('Seq')
+        elif 'ID' in df.columns: 
+            print('ID !!!!!!!!!')
+            df = df.set_index('ID')
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        dfs.append((name+str(i or ''), df))
+25/87: dfadd = d['addcodes']
+25/88: d = dict(dfs)
+25/89: d
+25/90:
+dfs = []
+ymd = datetime.now()
+ymd = ymd.year, ymd.month, ymd.day
+for p in Path('./data/private/').glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    path = p.parent / f
+    for i, df in enumerate(pd.read_html(p)):
+        
+        if 'seq' in df.columns:
+            print('!!!!!! ID')
+            df = df.set_index('seq')
+        else: 
+            df = df.set_index('seq')
+        dfs.append((name+str(i or ''), df))
+25/91: hist
+25/92:
+# process_addcodes.py
+from pathlib import Path
+import pandas as pd
+import datetime
+
+ymd = datetime.now()
+ymd = ymd.year, ymd.month, ymd.day
+25/93: datetime.datetime.today()
+25/94: dt = datetime.datetime.today()
+25/95: dt.year
+25/96: dt.month
+25/97: dt.day
+25/98: dt = datetime.date.today()
+25/99: dt
+25/100: dt.isoformat()
+25/101: hist
+25/102: dfwait
+25/103:
+dt = datetime.date.today()
+date = dt.isoformat()
+
+data_dir = Path('./data/private')
+dfs = []
+for p in data_dir.glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        if 'Seq' in df.columns:
+            print('!!!!!! Seq')
+            df = df.set_index('Seq')
+        elif 'ID' in df.columns:
+            print('ID !!!!!!')
+            df = df.set_index('ID')
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        dfs.append((name + str(i or ''), df))
+
+d = dict(dfs)
+for name, df in d.items():
+    df.to_csv((data_dir / name).with_suffix('.{date}.csv.gz'))
+25/104: d
+25/105:
+
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+
+for (i, (seq, row)) in enumerate(dfadd[dfwait['comment'].isna()].iterrows()):
+    waitcode = row['number']
+    student = dfwait.iloc[i]
+    print(i, student)
+25/106: dfwait
+25/107: dfadd
+25/108:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comment'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(not_yet_added)
+    waitcode = row['number']
+    student = dfwait.iloc[i]
+    print(i, student)
+25/109: dfadd
+25/110: dfadd
+25/111:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(not_yet_added)
+    waitcode = row['number']
+    student = dfwait.iloc[i]
+    print(i, student)
+25/112:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(not_yet_added)
+    waitcode = row['number']
+    if i > len(dfwait):
+        break
+    student = dfwait.iloc[i]
+    print(i, student)
+25/113: waitcode
+25/114: student
+25/115: len(dfwait)
+25/116: not_yet_added
+25/117:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i > len(dfwait):
+        break
+    student = dfwait.iloc[i]
+    print(i, student)
+25/118: len(dfwait)
+25/119: i
+25/120:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i]
+    print(i, student)
+25/121: student.to_dict()
+25/122:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = row.index
+    print(i, student)
+25/123:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+not_yet_added = dfadd['comments'].isna()
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = dfwait.index.values[i]
+    print(i, student)
+25/124:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = dfwait.index.values[i]
+    student['email'] = df.loc[student['ID']]['email']
+    print(student['email'], student)
+    emails.append(student)
+25/125: hist
+25/126:
+# process_addcodes.py
+from pathlib import Path
+import pandas as pd
+import datetime
+
+dt = datetime.date.today()
+date = dt.isoformat()
+
+data_dir = Path('./data/private')
+dfs = []
+for p in data_dir.glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        if 'Seq' in df.columns:
+            print('!!!!!! Seq')
+            df = df.set_index('Seq')
+        elif 'ID' in df.columns:
+            print('ID !!!!!!')
+            df = df.set_index('ID')
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        dfs.append((name + str(i or ''), df))
+
+d = dict(dfs)
+for name, df in d.items():
+    df.to_csv((data_dir / name).with_suffix('.{date}.csv.gz'))
+25/127:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = dfwait.index.values[i]
+    student['email'] = df.loc[student['ID']]['email']
+    print(student['email'], student)
+    emails.append(student)
+25/128:
+d = dict(dfs)
+for name, df in d.items():
+    p = (data_dir / name).with_suffix('.{date}.csv.gz')
+    df.to_csv(p)
+    d[name] = pd.read_csv(p, index_col=0)
+
+
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = dfwait.index.values[i]
+    student['email'] = df.loc[student['ID']]['email']
+    print(student['email'], student)
+    emails.append(student)
+25/129: student
+25/130: dfall
+25/131: dfall['ID']
+25/132: dfall.index
+25/133: len(dfall)
+25/134:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = dfwait.iloc[i].to_dict()
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student['status'])
+    emails.append(student)
+25/135: student
+25/136:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = row.to_dict()
+    student.update(dfwait.iloc[i].to_dict())
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student['name'], student['ID'], student['number'], student['status'] == 'Waiting')
+    emails.append(student)
+25/137:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = row.to_dict()
+    student.update(dfwait.iloc[i].to_dict())
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student[['name', 'ID', 'number']], student['status'] == 'Waiting')
+    emails.append(student)
+25/138:
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = row.to_dict()
+    student.update(dfwait.iloc[i].to_dict())
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student['name'], student['ID'], student['number'], student['status'] == 'Waiting')
+    emails.append(student)
+25/139: emails
+25/140: pd.DataFrame(emails).to_csv(data_dir / 'emails.csv')
+25/141: pd.read_html?
+25/142: dfemail = pd.DataFrame(emails)
+25/143: dfemail.columns
+25/144: dfemail['number']
+25/145: dfemail['FirstName'] = df['name'].split()[0]
+25/146: dfemail['FirstName'] = df['name'].str.split()[0]
+25/147: dfemail['FirstName'] = df['name'].str.split().str[0]
+25/148: dfemail
+25/149: dfemail['FirstName'] = dfemail['name'].str.split(',').str[-1].str.split().str[0]
+25/150: dfemail['FirstName']
+25/151: dfemail.to_csv(data_dir / 'emails.csv')
+25/152: emailadds = 'mkaiser@student.sdccd.edu, atran024@student.sdccd.edu, fklecak@student.sdccd.edu, khudluman001@student.sdccd.edu, lpatapoutian@student.sdccd.edu, jpatrao@student.sdccd.edu, omorales003@student.sdccd.edu, dsanders001@student.sdccd.edu'
+25/153: emailadds.split(',')
+25/154: emailadds = [e.strip() for e in emailadds.split(',')]
+25/155: emailadds
+25/156: emails
+25/157: dfemail['PrimaryEmail'] = emailadds
+25/158: dfemail
+25/159: dfemail['PrimaryEmail'] = emailadds[2:-1]
+25/160: dfemail['PrimaryEmail'] = emailadds[2:]
+25/161: dfemail
+25/162: dfemail
+25/163: dfemail[1:]
+25/164: dfemail[1:].to csv(data_dir / 'waitlist_add_code_emails.csv')
+25/165: dfemail[1:].to_csv(data_dir / 'waitlist_add_code_emails.csv')
+25/166: emails
+25/167: emails
+25/168: emailadds
+25/169: emails[-1]
+25/170: hist
+25/171: dfall[dfall['Status']=='Waiting']
+25/172: dfall[dfall['status']=='Waiting']
+25/173:
+maillist = []
+for (i, (ID, row)) in enumerate(dfall[dfall['status']=='Waiting'].iterrows()):
+    dct = row.to_dict()
+    dct['ID'] = ID
+    dct.update(dfadd.iloc[i+2].to_dict())
+    dct['id'] = ID
+    emailadds[row['name']]
+25/174: path = (data_dir / 'all.html')
+25/175: path.is_file()
+25/176:
+def find_hrefs(path=(data_dir / 'all.html')):
+    path = Path(path)
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        parsed_table = soup.find_all('table')[1]
+    return parsed_table
+25/177: find_hrefs()
+25/178: import bs4 as bs
+25/179: find_hrefs()
+25/180:
+def find_hrefs(path=(data_dir / 'all.html')):
+    path = Path(path)
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+
+        dfs = []
+        for parsed_table in soup.find_all('table'):
+            data = [[td.a['href'] if td.find('a') else
+                     ''.join(td.stripped_strings)
+                     for td in row.find_all('td')]
+                    for row in parsed_table.find_all('tr')]
+            df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(df)
+    return dfs
+25/181: find_hrefs()
+25/182:
+
+def find_hrefs(path=(data_dir / 'all.html')):
+    path = Path(path)
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+
+        dfs = []
+        for parsed_table in soup.find_all('table'):
+            data = [[td.a['href'] if td.find('a') else
+                     ''.join(td.stripped_strings)
+                     for td in row.find_all('td')]
+                    for row in parsed_table.find_all('tr')]
+            print(data)
+            df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(df)
+    return dfs
+25/183: find_hrefs()
+25/184: more data/private/all.csv
+25/185: more data/private/all.html
+25/186: more data/private/allraw.html
+25/187:
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+
+        dfs = []
+        for parsed_table in soup.find_all('table'):
+            data = [[td.a['href'] if td.find('a') else
+                     ''.join(td.stripped_strings)
+                     for td in row.find_all('td')]
+                    for row in parsed_table.find_all('tr')]
+            print(data)
+            df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(df)
+    return dfs
+25/188:
+
+dfs = []
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = [[td.a['href'] if td.find('a') else
+                     ''.join(td.stripped_strings)
+                     for td in row.find_all('td')]
+                    for row in parsed_table.find_all('tr')]
+            print(data)
+            df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(df)
+    return dfs
+25/189: find_hrefs()
+25/190: more ~/Downloads/allraw.html
+25/191: mv /home/hobs/Downloads/allraw.html data/private/
+25/192: find_hrefs()
+25/193: !grep 'Pisani,Andrew Jordan' ./data/private/allraw.html
+25/194:
+
+dfs = []
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = [[td.a['href'] if td.find('a') else
+                     ''.join(td.get('name') or td.stripped_strings)
+                     for td in row.find_all('td')]
+                    for row in parsed_table.find_all('tr')]
+            print(data)
+            df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(df)
+    return dfs
+25/195: find_hrefs()
+25/196: dfs
+25/197: hist
+25/198:
+dfs = []
+
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = []
+            for row in parsed_table.find_all('tr'):
+                for td in row.find_all('td'):
+                    if td.find('a'):
+                        print(td.a)
+                        data += [td.a]
+                    else:
+                        data += [td.text]
+            print(data)
+            # df = pd.DataFrame(data[1:], columns=data[0])
+            # dfs.append(df)
+    return dfs
+25/199: find_hrefs()
+25/200:
+dfs = []
+
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = []
+            for row in parsed_table.find_all('tr'):
+                for td in row.find_all('td'):
+                    if td.find('a'):
+                        print(td.a)
+                        data += [[td.a.get('name', ''), td.a.get('href', '')]]
+                    else:
+                        data += ['']
+            print(data)
+            # df = pd.DataFrame(data[1:], columns=data[0])
+            # dfs.append(df)
+    return dfs
+25/201: find_hrefs()
+25/202: data
+25/203: data
+25/204: find_hrefs()
+25/205: dfs = find_hrefs()
+25/206: dfs
+25/207:
+dfs = []
+
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = []
+            for row in parsed_table.find_all('tr'):
+                for td in row.find_all('td'):
+                    if td.find('a'):
+                        print(td.a)
+                        data += [[td.a.get('name', ''), td.a.get('href', '')]]
+                    else:
+                        data += ['']
+            print('\n'.join(data))
+            # df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(data)
+    return dfs
+25/208: dfs = find_hrefs()
+25/209:
+dfs = []
+
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = []
+            for row in parsed_table.find_all('tr'):
+                for td in row.find_all('td'):
+                    if td.find('a'):
+                        print(td.a)
+                        data += [[td.a.get('name', ''), td.a.get('href', '')]]
+                    else:
+                        data += ['']
+            # print('\n'.join(data))
+            # df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(data)
+    return dfs
+25/210: dfs = find_hrefs()
+25/211: dfs[0]
+25/212: dfs[1]
+25/213: dfs[2]
+25/214: dfs[3]
+25/215: dfs[4]
+25/216: dfs[5]
+25/217: dfs[6]
+25/218: dfs[7]
+25/219: len(dfs)
+25/220: dfs = []
+25/221: dfs = find_hrefs()
+25/222: len(dfs)
+25/223:
+dfs = []
+
+
+def find_hrefs(path=(data_dir / 'allraw.html')):
+    path = Path(path)
+    global dfs
+    with path.open() as f:
+        soup = bs.BeautifulSoup(f, 'lxml')
+        for parsed_table in soup.find_all('table'):
+            data = []
+            rows = list(parsed_table.find_all('tr'))
+            print(len(rows))
+            for row in rows:
+                for td in row.find_all('td'):
+                    if td.find('a'):
+                        print(td.a)
+                        data += [[td.a.get('name', ''), td.a.get('href', '')]]
+                    else:
+                        data += ['']
+            # print('\n'.join(data))
+            # df = pd.DataFrame(data[1:], columns=data[0])
+            dfs.append(data)
+    return dfs
+25/224: dfs = find_hrefs()
+25/225:
+emailadds = 'mkaiser@student.sdccd.edu, atran024@student.sdccd.edu, fklecak@student.sdccd.edu, khudluman001@student.sdccd.edu, lpatapoutian@student.sdccd.edu, jpatrao@student.sdccd.edu, omorales003@student.sdccd.edu, dsanders001@student.sdccd.edu'
+emailadds = [e.strip() for e in emailadds.split(',')]
+25/226: emailadds
+25/227: len(emailadds)
+25/228:
+# process_addcodes.py
+import bs4 as bs
+from pathlib import Path
+import pandas as pd
+import datetime
+
+dt = datetime.date.today()
+date = dt.isoformat()
+
+data_dir = Path('./data/private')
+dfs = []
+for p in data_dir.glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        if 'Seq' in df.columns:
+            print('!!!!!! Seq')
+            df = df.set_index('Seq')
+        elif 'ID' in df.columns:
+            print('ID !!!!!!')
+            df = df.set_index('ID')
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        dfs.append((name + str(i or ''), df))
+
+d = dict(dfs)
+for name, df in d.items():
+    p = (data_dir / name).with_suffix(f'.{date}.csv.gz')
+    df.to_csv(p)
+    d[name] = pd.read_csv(p, index_col=0)
+
+
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = row.to_dict()
+    student.update(dfwait.iloc[i].to_dict())
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student['name'], student['ID'], student['number'], student['status'] == 'Waiting')
+    emails.append(student)
+25/229: dfall.to_csv(data_dir / 'all.csv')
+25/230: df = data_dir / 'allwithwaitlistemails.csv'
+25/231: df = pd.read_csv(df)
+25/232: df
+25/233: waiting = df['status'] == 'Waiting'
+25/234: df[waiting]
+25/235: columns = list(df.columns)
+25/236: df['FirstName'] = df['last_known_academic_activity']
+25/237: df[waiting]
+25/238: df[waiting].to_csv(data_dir / 'waiting.csv')
+25/239: hist -o -p -f scripts/email_add_codes_failed.hist.ipy
+25/240: hist -f scripts/email_add_codes_failed.hist.py
+26/1:
+# process_addcodes.py
+import bs4 as bs
+from pathlib import Path
+import pandas as pd
+import datetime
+
+dt = datetime.date.today()
+date = dt.isoformat()
+
+data_dir = Path('./data/private')
+dfs = []
+for p in data_dir.glob('*.htm*'):
+    print(p)
+    name = p.with_suffix('').name
+    for i, df in enumerate(pd.read_html(p)):
+        if 'Seq' in df.columns:
+            print('!!!!!! Seq')
+            df = df.set_index('Seq')
+        elif 'ID' in df.columns:
+            print('ID !!!!!!')
+            df = df.set_index('ID')
+        df.columns = [str(s).lower().strip().replace(' ', '_') for s in df.columns]
+        dfs.append((name + str(i or ''), df))
+
+d = dict(dfs)
+for name, df in d.items():
+    p = (data_dir / name).with_suffix(f'.{date}.csv.gz')
+    df.to_csv(p)
+    d[name] = pd.read_csv(p, index_col=0)
+
+
+df = d['roster']
+dfadd = d['addcodes']
+dfwait = d['waitlist']
+dfall = d['all']
+not_yet_added = dfadd['comments'].isna()
+emails = []
+
+for (i, (seq, row)) in enumerate(dfadd[not_yet_added].iterrows()):
+    i += sum(~not_yet_added)
+    waitcode = row['number']
+    if i >= len(dfwait):
+        break
+    student = row.to_dict()
+    student.update(dfwait.iloc[i].to_dict())
+    student['ID'] = dfwait.index.values[i]
+    student.update(dfall.loc[student['ID']].to_dict())
+    print(student['name'], student['ID'], student['number'], student['status'] == 'Waiting')
+    emails.append(student)
+26/2: df
+26/3: dfall
+26/4: dfall.email
+26/5: dfall.iloc[0]
+26/6: dfall = data_dir / 'allwithwaitlistemails.csv'
+26/7: dfall = read_csv(dfall)
+26/8: dfall = pd.read_csv(dfall)
+26/9: dfall.email
+26/10: dfall[dfall['status']=='Waiting']
+26/11: dfall[dfall['status']=='Enrolled']
+26/12: dfall['runestone_username'] = dfall['name'].str.split(',').str[0]
+26/13: dfall['runestone_username']
+26/14: enrolled = dfall['status']=='Enrolled'
+26/15: dfall['runestone_username'][enrolled]
+26/16: len(dfall['runestone_username'][enrolled])
+26/17: dfall['runestone_username'][enrolled].nunique()
+26/18: dfall = data_dir / 'allwithrunestoninfo.csv'
+26/19: dfall = pd.read_csv(dfall)
+26/20: dfall = data_dir / 'allwithrunestoneinfo.csv'
+26/21: dfall = pd.read_csv(dfall)
+26/22: waiting = dfall['status']=='Waiting'
+26/23: enrolled = dfall['status']=='Enrolled'
+26/24: dfall['runestone_username'] = dfall['name'].str.split(',').str[0]
+26/25: dfall['runestone_password'] = dfall['ID'].str[-6:]
+26/26: dfall['runestone_password'] = dfall['ID'].astype('str').str[-6:]
+26/27: dfall.iloc[-1]
+26/28: columns = 'username,email,first_name,last_name,password,course'.split(',')
+26/29: dfall['runestone_email'] = dfall['runestone_username'].apply(x: f'mesa2024_student_{x}@totalgood.com')
+26/30: dfall['runestone_email'] = dfall['runestone_username'].apply(lambda x: f'mesa2024_student_{x}@totalgood.com')
+26/31: dfall.iloc[-1]
+26/32: dfall['runestone_email'] = dfall['runestone_username'].apply(lambda x: f'mesa2024_student_{x}@totalgood.com'.lower())
+26/33: dfall.iloc[-1]
+26/34: dfall['last_name'] = dfall['runestone_username']
+26/35: dfall['runestone_username'] = dfall['name'].str.split(',').str[0] + '24'
+26/36: dfall['runestone_username'] = (dfall['name'].str.split(',').str[0] + '24').str.lower().str.replace(' ', '_')
+26/37: dfall['runestone_username']
+26/38: dfall['runestone_username'].values
+26/39: dfall['runestone_username'] = (dfall['name'].str.split(',').str[0] + '24').str.lower().str.replace(' ', '_').str.replace('.', '')
+26/40: dfall['last_name']
+26/41: dfall['first_name'] = (dfall['name'].str.split(',').str[1].str.split().str[0])
+26/42: dfall['first_name'].unique().values
+26/43: dfall['first_name'].unique()
+26/44: len(dfall['first_name'].unique())
+26/45: len(dfall['first_name'])
+26/46: len(dfall['first_name'][enrolled])
+26/47: len(dfall['first_name'][enrolled].unique())
+26/48: len(dfall['last_name'][enrolled].unique())
+26/49: columns
+26/50: dfall.columns
+26/51: dfall['course'] = 'CISC-179 Python Programming'
+26/52: dfall
+26/53: dfall[[columns]]
+26/54: dfall[columns]
+26/55: dfall['username'] = dfall['runestone_username']
+26/56: dfall['password'] = dfall['runestone_password']
+26/57: dfrune = pd.DataFrame([],columns=columns)
+26/58: dfrune = dfall[columns]
+26/59: dfrune
+26/60: columns = 'runestone_username,runestone_email,first_name,last_name,runestone_password,course'.split(',')
+26/61: dfrune = dfall[columns]
+26/62: dfrune
+26/63: dfrune.to_csv('runestone_roster.csv')
+26/64: dfrune.to_csv('runestone_roster.csv',header=None)
+26/65: more runestone_roster.csv
+26/66: columns = 'runestone_username,runestone_email,first_name,last_name,runestone_password,runestone_course'.split(',')
+26/67: dfall['course'] = 'mesa_python'
+26/68: dfall['course'] = 'CISC-179 Python Programming'
+26/69: dfall['runestone_course'] = 'mesa_python'
+26/70: dfrune = dfall[columns]
+26/71: dfrune.to_csv('runestone_roster.csv',header=None)
+26/72: dfall.to_csv(data_dir / 'allwithrunestoneinfo.csv')
+26/73: dfrune.to_csv(data_dir / 'runestone_roster_with_header.csv',header=None)
+26/74: dfrune.to_csv(data_dir / 'runestone_roster_no_header.csv',header=None)
+26/75: dfrune.to_csv(data_dir / 'runestone_roster_with_header.csv')
+26/76: dfrune[enrolled].to_csv(data_dir / 'runestone_roster_with_header.csv')
+26/77: dfrune[enrolled].to_csv(data_dir / 'runestone_roster_no_header.csv',header=None,index=None)
+26/78: more data/private/runestone_roster_no_header.csv
+27/1: hist ~2/
+27/2: hist ~1/
+28/1: url = 'https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+28/2: import requests
+28/3: r = requests.get(url)
+28/4: import bs4 as bs
+28/5: from bs4 import BeautifulSoup as Soup
+28/6: s = Soup(r.text)
+28/7: hrefs = list(s.find_all('href'))
+28/8: hrefs
+28/9: hrefs = list(s.find_all('a'))
+28/10: hrefs
+28/11: hrefs = [a.get('name'), a.get('href', '') for a in s.find_all('a')]
+28/12: hrefs = [(a.get('name'), a.get('href', '')) for a in s.find_all('a')]
+28/13: hrefs
+28/14: dir(a)
+28/15: anchors = list(s.find_all('a'))
+28/16: dir(anchors[10])
+28/17: dir(anchors[10].attrs)
+28/18: list(anchors[10].attrs)
+28/19: list(anchors[10].text)
+28/20: anchors[10].text
+28/21: hrefs = [(a.text, a.href) for a in s.find_all('a')]
+28/22: anchors[10].attrs
+28/23:
+anchors = []
+for a in s.find_all('a'):
+    anchors.append(a.attrs)
+    anchors[-1]['text'] = text
+28/24:
+anchors = []
+for a in s.find_all('a'):
+    anchors.append(a.attrs)
+    anchors[-1]['text'] = a.text
+28/25: import pandas as pd
+28/26: df = pd.DataFrame(anchors)
+28/27: df
+28/28: df.head(30)
+28/29: df[['text', 'href']]
+28/30: df['is_book'] = df['text'].str.strip()..str.startswith(r'\d?\d\.')
+28/31: df['is_book'] = df['text'].str.strip().str.startswith(r'\d?\d\.')
+28/32: is_book = df['text'].str.strip().str.startswith(r'\d?\d\.')
+28/33: df[is_book]
+28/34: import re
+28/35: is_book = df['text'].str.strip().str.startswith(re.compile(r'\d?\d\.'))
+28/36: is_book = df['text'].str.strip().str.match(re.compile(r'\d?\d\.'))
+28/37: sum(is_book)
+28/38: df[is_book]
+28/39: df[is_book]['text href'.split()]
+28/40: from tqdm import tqdm
+28/41:
+for title, href in tqdm(zip(df[is_book]['text href'.split()].T)):
+    print(title, href)
+28/42:
+for title, href in tqdm(zip(df[is_book]['text'], df[is_book]['href'])):
+    print(title, href)
+28/43: url
+28/44:
+from urllib.parse.urlparse
+
+sections = urlparse(url)
+28/45:
+from urllib.parse import urlparse
+
+sections = urlparse(url)
+28/46: sections
+28/47: sections.path.parent
+28/48: str(sections)
+28/49: sections.text
+28/50: sections._asdict()
+28/51: sections.asdict()
+28/52: sections.encode()
+28/53: sections.geturl()
+28/54:
+url = parseurl(url)
+url.__str__ = url.get_url
+28/55:
+url = urlparse(url)
+url.__str__ = url.get_url
+28/56:
+url = urlparse(url)
+url.__str__ = url.geturl
+28/57: url = urlparse(url)
+28/58: url
+28/59: url.__str__ = url.geturl
+28/60: url
+28/61: Path(url.path).parent
+28/62: from pathlib import Path
+28/63: Path(url.path).parent
+28/64: baseurl = url
+28/65: baseurl.path = Path(url.path).parent
+28/66: baseurlstr = url.scheme + '///' + str(Path(url.path).parent)
+28/67: url = 'https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+28/68: urlstr = 'https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+28/69: baseurlstr = url.scheme + '///' + str(Path(url.path).parent)
+28/70: url = parseurl(url)
+28/71: url = urlparse(url)
+28/72: baseurlstr = url.scheme + '///' + str(Path(url.path).parent)
+28/73:
+pages = []
+for title, hrefstr in tqdm(zip(df[is_book]['text'], df[is_book]['href'])):
+    href = urlparse(href)
+    print(title, href)
+28/74: href.asdict
+28/75: url.asdict()
+28/76: dict(url)
+28/77: url
+28/78: vars(url)
+28/79: dir(url)
+28/80: url
+28/81: url._asdict()
+28/82:
+for a in anchors:
+    a.update(urlparse(a['href']))
+28/83: anchors[0]
+28/84: anchors[0]['href']
+28/85: urlparse(anchors[0]['href'])
+28/86:
+for a in anchors:
+    a.update(urlparse(a.get('href', '')))
+28/87:
+for a in anchors:
+        a.update(urlparse(a.get('href', ''))._asdict())
+28/88: df = pd.DataFrame(anchors)
+28/89: anchors['path']
+28/90: df['path']
+28/91:
+for a in tqdm(anchors):
+    print(a['title'], a['netloc'] or baseurl.scheme, a['path'])
+28/92:
+for a in tqdm(anchors):
+    print(a['text'], a['netloc'] or baseurl.scheme, a['path'])
+28/93:
+for a in tqdm(anchors):
+    print(a['text'], a['netloc'] or baseurl.netloc, a['path'])
+28/94:
+for a in tqdm(anchors):
+    print(a['text'], (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path'])
+28/95:
+for a in tqdm(anchors):
+    print(a['text'], (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path'])
+    sleep(.27)
+28/96: imoport time
+28/97: import time
+28/98:
+for a in tqdm(anchors):
+    print(a['text'], (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path'])
+    time.sleep(.27)
+28/99:
+mkdir textbook
+
+for a in tqdm(anchors):
+    break
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path']
+    r = request.get(a['url'])
+    path = Path(a['text'].replace('.', '_'))
+    path.open
+    time.sleep(.17)
+28/100: ls
+28/101: pwd
+28/102: cd code/hobs/mesa/2024/cisc-179-private/
+28/103: ls
+28/104: cd content
+28/105: ls
+28/106: mkdir resources-student
+28/107: cd resources-student
+28/108: mkdir fopp_html
+28/109: cd fopp_html
+28/110:
+mkdir textbook
+
+for a in tqdm(anchors):
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path']
+    r = request.get(a['url'])
+    a['page_text'] = r['text']
+    path = Path(a['text'].replace('.', '_'))
+    print(path)
+    path.with_suffix('.html').open('w').write(r.text)
+    time.sleep(.17)
+28/111:
+for a in tqdm(anchors):
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path']
+    r = request.get(a['url'])
+    a['page_text'] = r['text']
+    path = Path(a['text'].replace('.', '_'))
+    print(path)
+    path.with_suffix('.html').open('w').write(r.text)
+    time.sleep(.17)
+28/112:
+for a in tqdm(anchors):
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + (a['netloc'] or baseurl.netloc) + '/' + a['path']
+    r = requests.get(a['url'])
+    a['page_text'] = r['text']
+    path = Path(a['text'].replace('.', '_'))
+    print(path)
+    path.with_suffix('.html').open('w').write(r.text)
+    time.sleep(.17)
+28/113:
+for a in tqdm(anchors):
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + '/'.join([(a['netloc'] or baseurl.netloc), a['path']])
+    print(a['url'])
+    r = requests.get(a['url'])
+    a['page_text'] = r['text']
+    path = Path(a['text'].replace('.', '_'))
+    print(path)
+    path.with_suffix('.html').open('w').write(r.text)
+    time.sleep(.17)
+28/114:
+for a, i in tqdm(zip(anchors, is_book)):
+    if not i:
+        continue
+    a['url'] = (a['scheme'] or baseurl.scheme) + ':///' + '/'.join([(a['netloc'] or baseurl.netloc), a['path']])
+    print(a['url'])
+    r = requests.get(a['url'])
+    a['page_text'] = r['text']
+    path = Path(a['text'].replace('.', '_'))
+    print(path)
+    path.with_suffix('.html').open('w').write(r.text)
+    time.sleep(.17)
+28/115: baseurl
+28/116: baseurlstr
+28/117: baseurlstr = url.scheme + '///' + url.netloc + str(Path(url.path).parent)
+28/118: baseurlstr
+28/119: baseurlstr + 'GeneralIntro/toctree.html'
+28/120: baseurlstr + '/GeneralIntro/toctree.html'
+28/121: newurl = _
+28/122: newurl2 = 'https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+28/123: newurl2
+28/124: newurl
+28/125: newurl3 = 'https://runestone.academy/ns/books/published/fopp/GeneralIntro/toctree.html?mode=browsing'
+28/126: newurl3
+28/127: newurltemplate = 'https://runestone.academy/ns/books/published/fopp/{path}?mode=browsing'
+28/128:
+for a, i in tqdm(zip(anchors, is_book)):
+    if not i:
+        continue
+    path = a['path']
+    print(path)
+    a['url_old'] = (a['scheme'] or baseurl.scheme) + ':///' + '/'.join([(a['netloc'] or baseurl.netloc), a['path']])
+    a['url'] = newurltemplate.format(path=path)
+    print(a['url'])
+    r = requests.get(a['url'])
+    a['page_text'] = r['text']
+    path2 = Path(a['text'].replace('.', '_'))
+    print(path2)
+    path = Path(path)
+    filename = Path(path.with_suffix('.html').name)
+    print(filename)
+    filename.open('w').write(r.text)
+    time.sleep(.17)
+28/129:
+for a, i in tqdm(zip(anchors, is_book)):
+    if not i:
+        continue
+    path = a['path']
+    print(path)
+    a['url_old'] = (a['scheme'] or baseurl.scheme) + ':///' + '/'.join([(a['netloc'] or baseurl.netloc), a['path']])
+    a['url'] = newurltemplate.format(path=path)
+    print(a['url'])
+    r = requests.get(a['url'])
+    a['page_text'] = r.text
+    path2 = Path(a['text'].replace('.', '_'))
+    print(path2)
+    path = Path(path)
+    filename = Path(path.with_suffix('.html').name)
+    print(filename)
+    filename.open('w').write(r.text)
+    time.sleep(.17)
+28/130: hist -o -p -f scripts/scrape_textbook.hist.ipy
+28/131: cd ..
+28/132: cd ..
+28/133: cd ..
+28/134: hist -o -p -f scripts/scrape_textbook.hist.ipy
+28/135: hist -f scripts/scrape_textbook.hist.py
+30/1: hist
+30/2: hist ~1
+30/3: hist ~2
+30/4: hist ~2/
+30/5: newurltemplate = 'https://runestone.academy/ns/books/published/fopp/{path}?mode=browsing'
+30/6: hist
+30/7: url = 'https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+30/8:
+r = requests.get(url)
+s = Soup(r.text)
+anchors = []
+for a in s.find_all('a'):
+    anchors.append(a.attrs)
+    anchors[-1]['text'] = a.text
+30/9: import requests
+30/10: from bs4 import BeautifulSoup as Soup
+30/11: hist
+30/12: df['path']
+30/13: hist | grep path
+30/14: hist ~2/ | grep path
+30/15: hist ~2/
+30/16:
+# scrape_textbook.py
+from tqdm import tqdm
+from pathlib import Path
+from bs4 import BeautifulSoup as Soup
+from urllib import urlparse
+import re
+import pandas as pd
+import requests
+import time
+
+
+def scrape_textbook(
+        url='https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing',
+        url_template='https://runestone.academy/ns/books/published/fopp/{relpath}?mode=browsing'):
+    r = requests.get(url)
+    s = Soup(r.text)
+    anchors = []
+    for a in s.find_all('a'):
+        anchors.append(a.attrs)
+        anchors[-1]['heading'] = a.text
+        anchors[-1].update(urlparse(a.get('href', ''))._asdict())
+    df = pd.DataFrame(anchors)
+    is_book = df['heading'].str.strip().str.match(re.compile(r'\d?\d\.'))
+
+    baseurl = urlparse(url_template.split('{relpath}')[0])
+    for a, i in tqdm(zip(anchors, is_book)):
+        if not i:
+            continue
+        a['url_old'] = (a['scheme'] or baseurl.scheme) + ':///' + '/'.join([(a['netloc'] or baseurl.netloc), a['path']])
+        a['url'] = url_template.format(path=a['path'])
+        r = requests.get(a['url'])
+        a['text'] = r.text
+        path = Path(a['path'])
+        filename = Path(path.with_suffix('.html').name)
+        filename.open('w').write(r.text)
+        time.sleep(.17)
+    return pd.DataFrame(anchors)
+30/17: %run scripts/scrape_textbook.py
+30/18: df = scrape_textbook()
+30/19:
+        url='https://runestone.academy/ns/books/published/fopp/index.html?mode=browsing'
+        url_template='https://runestone.academy/ns/books/published/fopp/{relpath}?mode=browsing'
+30/20: url_template.split('{relpath}')
+30/21: %run scripts/scrape_textbook.py
+30/22: scrape_textbook()
+30/23: scrape_textbook()
+30/24: df = _
+30/25: df['path']
+30/26: df['path'].iloc[495]
+30/27: Path(df['path'].iloc[495])
+30/28: Path(df['path'].iloc[495]).parent.mkdir(exists_ok=True, parents=True)
+30/29: Path(df['path'].iloc[495]).parent.mkdir(exist_ok=True, parents=True)
+30/30: rm -r GeneralIntro/
+30/31: mkdir data/fopp/
+30/32: cd data
+30/33: cd fopp
+30/34: ls -hal
+30/35: !pip install pickleshare
+30/36: !sudo pip install pickleshare
+31/1: hell
+31/2: git status
+32/1: %run scripts/scrape_textbook.py
+32/2: who
+32/3: DATA_DIR
+32/4: scrape_textbook()
+   1: ls *.py
+   2: from search_engine import *
+   3: who
+   4: model
+   5: ls *.py
+   6: from llm import *
+   7: who
+   8: rag?
+   9: hist -g | grep rag
+  10: hist -g
+  11: hist -g -f scripts/hist_g_2024_02_01.hist.ipy

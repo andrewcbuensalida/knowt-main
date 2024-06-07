@@ -1,0 +1,11 @@
+ipython
+joblib
+jupyter
+py-lsh
+numpy
+openai
+pandas
+scikit-learn
+sentence-transformers
+spacy
+# vaex # this is erroring

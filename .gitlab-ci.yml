@@ -1,0 +1,35 @@
+image: python:3.10.12
+
+#services:
+#  - redis
+
+stages:
+  - test
+
+test:
+  variables:
+    SECURE_FILES_DOWNLOAD_PATH: '.'
+  stage: test
+  before_script:
+    - export PYTHONDONTWRITEBYTECODE=1
+    - pip install --upgrade pip 
+    - pip install -e .[test,llm]
+    - python -m spacy download en_core_web_sm
+    # - cp .env_ci_cd .env
+
+  script:
+    - black . --check
+    # # Does not work because unknown file ID
+    # - curl --request GET --header "PRIVATE-TOKEN: $GITLAB_PERSONAL_ACCESS_TOKEN" https://gitlab.com/api/v4/projects/53630945/secure_files/1/download --output .env
+    # Does not work locally because need to be authenticated and to get past cloudflare
+    - curl --silent "https://gitlab.com/tangibleai/community/knowt/download-secure-files/-/raw/main/.env" --output .env
+    - pytest -vvv --cov=src/knowt --cov-report xml
+  #  - coverage xml -o ${CI_PROJECT_DIR}/coverage.xml
+  coverage: '/(?i)total.*? (100(?:\.0+)?\%|[1-9]?\d(?:\.\d+)?\%)$/'
+  # artifacts:
+  #   paths:
+  #     - coverage.xml
+  #   reports:
+  #     coverage_report:
+  #       coverage_format: cobertura
+  #       path: coverage.xml

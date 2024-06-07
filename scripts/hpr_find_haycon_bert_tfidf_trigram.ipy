@@ -1,0 +1,103 @@
+from knowt.search import *
+db = VectorDB()
+db.embeddings.shape
+db.df['name'] = db.df.filename.str.split('/').str[-1].str.split('.').str[0]
+db.df[['name', 'sentence']]
+db.df[['name', 'sentence']][db.df.name == 'hpr0002']
+db.df[['name', 'sentence']][db.df.name == 'hpr0003']
+db.search('lost haycon audio')
+db.search('what is haycon?')
+db.search('what is Haycon?')
+db.search('Haycon')
+db.search('Haycon', n_sentences=3)
+db.search('Haycon', n_sentences=1)
+from sklearn.feature_extraction.text import TfidfVectorizer
+tfidf = TfidfVectorizer()
+tfidf = TfidfVectorizer(stopwords=False, lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+tfidf = TfidfVectorizer(stop_words=False, lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+tfidf.fit(db.df.sentence)
+tfidf = TfidfVectorizer(stop_words=[], lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+tfidf.fit(db.df.sentence)
+vecs = tfidf.transform(db.df.sentence)
+tfidf.vocabulary_.shape
+len(tfidf.vocabulary_)
+'Haycon' in tfidf.vocabulary_
+tfidf.vocabulary_['Haycon']
+tfidf.vocabulary_['haycon']
+tfidf.df[tfidf.vocabulary_['Haycon']]
+tfidf.vocabulary[tfidf.vocabulary_['Haycon']]
+dir(tfidf)
+1 / tfidf.idf[tfidf.vocabulary_['Haycon']]
+tfidf.idf[tfidf.vocabulary_['Haycon']]
+tfidf.idf_[tfidf.vocabulary_['Haycon']]
+tfidf.idf_[tfidf.vocabulary_['the']]
+tfidf.idf_[tfidf.vocabulary_['Hobson']]
+max(tfidf.idf_.values())
+max(tfidf.idf_)
+type(vecs)
+import scipy.io
+scipy.io.mmwrite?
+from scipy.sparse import save_npz
+save_npz?
+save_npz?
+save_npz('tfidf_vectors.npz', vecs)
+ls -hal
+mv tfidf_vectors.npz .knowt-data/corpus_hpr/
+# mv .knowt-data/corpus_hpr/tfidf_vectors.npz .knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors.npz
+vecs.shape
+mv .knowt-data/corpus_hpr/tfidf_vectors.npz .knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors_41531x70271.npz
+import joblib
+joblib.dump?
+joblib.dump(tfidf, '.knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors_41531x70271.joblib')
+ls -hal
+ls -hal .knowt-data/corpus_hpr/
+tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=1, max_df=.7, ngram_range=(3,3))
+tfidf.fit(db.df.sentence)
+vecs = tfidf.transform(db.df.sentence)
+len(tfidf.vocabulary_)
+tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=0, max_df=1.0, ngram_range=(3,3))
+tfidf.fit(db.df.sentence)
+tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=0.0, max_df=1.0, ngram_range=(3,3))
+tfidf.fit(db.df.sentence)
+vecs = tfidf.transform(db.df.sentence)
+len(tfidf.vocabulary_)
+hay = tfidf.transform('Haycon')
+hay = tfidf.transform(['Haycon'])
+dots = hay.dot(vecs)
+dots = hay.dot(vecs.T)
+dots.argmax()
+db.df.iloc[17]
+ind = np.argpartition(dots, -10)[-10:]
+ind = np.argpartition?
+dots.shape
+ind = np.argpartition(dots.flatten(), -10)[-10:]
+ind = np.argpartition(dots.todense().flatten(), -10)[-10:]
+db.df.iloc[ind]
+ind
+ind = np.argpartition(dots.todense().toarray().flatten(), -10)[-10:]
+dots = dots.todense()
+dots = dots.flatten()
+dots.shape
+dots = dots.flat
+dots
+dots = np.array(dots)
+dots
+ind = np.argpartition(dots, -10)[-10:]
+df.iloc[ind]
+db.df.iloc[ind]
+ind = np.array(zip(dots[ind], ind))
+ind.sort()
+sorted(ind)
+ind
+ind = list(ind)
+ind[0]
+ind
+ind.shape
+ind = np.argpartition(dots, -10)[-10:]
+maxdots = list(zip(dots[np.array(ind.todense().flat)], ind.todense().flat))
+ind
+maxdots = list(zip(dots[ind].flat, ind))
+maxdots
+sorted(maxdots)
+hist -o -p -f scripts/hpr_find_haycon_bert_tfidf_trigram.hist.ipy
+hist -f scripts/hpr_find_haycon_bert_tfidf_trigram.ipy

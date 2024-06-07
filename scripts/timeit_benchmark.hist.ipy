@@ -1,0 +1,117 @@
+>>> import numpy as np
+... 
+... shape = (41531, 384)
+... mmvecs = np.memmap('.knowt-data/corpus_hpr/sentences.embeddings.memmap', shape=shape, mode='r', dtype=np.float32)
+...
+>>> mmvecs
+memmap([[-0.11991242, -0.01196034, -0.07994116, ...,  0.03639957,
+          0.02800957, -0.01285664],
+        [ 0.01803639,  0.03353405, -0.11221211, ...,  0.05115493,
+         -0.04237447,  0.00462139],
+        [ 0.00401675, -0.00665495, -0.16401418, ..., -0.06851127,
+          0.00684947, -0.0041246 ],
+        ...,
+        [-0.08166403, -0.04562299, -0.04786608, ...,  0.02134657,
+         -0.04072817,  0.08847301],
+        [-0.0070303 , -0.13603874,  0.01628101, ...,  0.03832156,
+         -0.0656099 ,  0.01815553],
+        [ 0.00590789, -0.03429353,  0.06170199, ..., -0.02477657,
+          0.01814286, -0.06049331]], dtype=float32)
+>>> np.random.set_state(1); v = np.random.randn(1000, 384)
+>>> np.random.set_state? v = np.random.randn(1000, 384)
+>>> np.random.set_state?
+>>> np.random.seed?
+>>> np.seed(1)
+>>> np.random.seed(1)
+>>> v = np.random.randn(1000, 384)
+>>> import timeit
+>>> timeit.timeit?
+>>> timeit.timeit('v.dot(mmvecs.T)', globals=dict(np=np, v=v, mmvecs=mmvecs))
+>>> v = np.random.randn(2, 384)
+>>> mmvecs.resize?
+>>> v = np.random.randn(1, 384)
+>>> %timeit v.dot(mmvecs)
+>>> mmvecs=mmvecs.T
+>>> %timeit v.dot(mmvecs)
+>>> timeit.timeit?
+>>> timeit.timeit('v.dot(mmvecs.T)', globals=dict(np=np, v=v, mmvecs=mmvecs), number=20)
+>>> timeit.timeit('v.dot(mmvecs)', globals=dict(np=np, v=v, mmvecs=mmvecs), number=20)
+0.6553003459994216
+>>> timeit.timeit('v.dot(mmvecs)', globals=dict(np=np, v=v, mmvecs=mmvecs), number=1)
+0.027156211001056363
+>>> timeit.timeit('v.dot(mmvecs)', globals=dict(np=np, v=v, mmvecs=mmvecs), number=10)
+0.31012663599904045
+>>> hist -o -p
+>>> for row
+>>> for row
+>>> answers = []
+>>> def do_dots():
+...     answers = np.zeros(shape[0])
+...     for vec in vecs:
+...         answers.append(sum((x1 * x2 for (x1, x2) in zip(v[0], vec))))
+...     return answers
+...
+>>> variables = dict(np=np, do_dots=do_dots, vecs=vecs, v=v)
+>>> vecs
+>>> who
+>>> vecs = np.array(mmvecs.copy().tolist())
+>>> vecs
+array([[-0.11991242,  0.01803639,  0.00401675, ..., -0.08166403,
+        -0.0070303 ,  0.00590789],
+       [-0.01196034,  0.03353405, -0.00665495, ..., -0.04562299,
+        -0.13603874, -0.03429353],
+       [-0.07994116, -0.11221211, -0.16401418, ..., -0.04786608,
+         0.01628101,  0.06170199],
+       ...,
+       [ 0.03639957,  0.05115493, -0.06851127, ...,  0.02134657,
+         0.03832156, -0.02477657],
+       [ 0.02800957, -0.04237447,  0.00684947, ..., -0.04072817,
+        -0.0656099 ,  0.01814286],
+       [-0.01285664,  0.00462139, -0.0041246 , ...,  0.08847301,
+         0.01815553, -0.06049331]])
+>>> del mmvecs
+>>> import numpy as np
+... 
+... shape = (41531, 384)
+... vecs = np.memmap('.knowt-data/corpus_hpr/sentences.embeddings.memmap', shape=shape, mode='r', dtype=np.float32).T
+...
+>>> vecs
+memmap([[-0.11991242,  0.01803639,  0.00401675, ..., -0.08166403,
+         -0.0070303 ,  0.00590789],
+        [-0.01196034,  0.03353405, -0.00665495, ..., -0.04562299,
+         -0.13603874, -0.03429353],
+        [-0.07994116, -0.11221211, -0.16401418, ..., -0.04786608,
+          0.01628101,  0.06170199],
+        ...,
+        [ 0.03639957,  0.05115493, -0.06851127, ...,  0.02134657,
+          0.03832156, -0.02477657],
+        [ 0.02800957, -0.04237447,  0.00684947, ..., -0.04072817,
+         -0.0656099 ,  0.01814286],
+        [-0.01285664,  0.00462139, -0.0041246 , ...,  0.08847301,
+          0.01815553, -0.06049331]], dtype=float32)
+>>> variables = dict(np=np, do_dots=do_dots, vecs=vecs, v=v)
+>>> timeit('do_dot()', globals=variables)
+>>> from timeit import timeit
+>>> timeit('do_dot()', globals=variables)
+>>> timeit('do_dots()', globals=variables)
+>>> def do_dots():
+...     answers = np.zeros(shape[0])
+...     for i, vec in enumerate(vecs):
+...         answers[i,:] = sum((x1 * x2 for (x1, x2) in zip(v[0], vec)))
+...     return answers
+...
+>>> variables = dict(np=np, do_dots=do_dots, vecs=vecs, v=v)
+>>> timeit('do_dots()', globals=variables)
+>>> def do_dots():
+...     answers = np.zeros(shape[0])
+...     for i, vec in enumerate(vecs):
+...         answers[i] = sum((x1 * x2 for (x1, x2) in zip(v[0], vec)))
+...     return answers
+...
+>>> variables = dict(np=np, do_dots=do_dots, vecs=vecs, v=v)
+>>> timeit('do_dots()', globals=variables)
+>>> timeit('do_dots()', globals=variables, number=1)
+0.10109178899983817
+>>> timeit('do_dots()', globals=variables, number=10)
+0.9936741420006001
+>>> hist -o -p -f scripts/timeit_benchmark.hist.ipy

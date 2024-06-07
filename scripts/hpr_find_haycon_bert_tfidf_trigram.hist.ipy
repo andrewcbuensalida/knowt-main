@@ -1,0 +1,365 @@
+>>> from knowt.search import *
+>>> db = VectorDB()
+>>> db.embeddings.shape
+(41531, 384)
+>>> db.df['name'] = db.df.filename.str.split('/').str[-1].str.split('.').str[0]
+>>> db.df[['name', 'sentence']]
+          name                                           sentence
+0      hpr0001  ## hpr0001 :: Introduction to HPR    In this f...
+1      hpr0001  The story of Hacker Public Radio begins where ...
+2      hpr0001  StankDawg was a busy with Binary Revolution Ra...
+3      hpr0001  Then droops, another podcaster (Infonomicon) w...
+4      hpr0001  About a year in Enigma took over operations fr...
+...        ...                                                ...
+41526  hpr4038                                    I tinker a lot.
+41527  hpr4038                        I’m paranoid about backups.
+41528  hpr4038  I enjoy spreading the load over different syst...
+41529  hpr4039  ## hpr4039 :: 3 ways to keep up with Youtube C...
+41530  rrespon                                       ## nan   nan
+
+[41531 rows x 2 columns]
+>>> db.df[['name', 'sentence']][db.df.name == 'hpr0002']
+       name                                           sentence
+12  hpr0002  ## hpr0002 :: Customization the Lost Reason   ...
+13  hpr0002  He points out that the PC stands for Personal ...
+14  hpr0002  To many on windows this means they can change ...
+15  hpr0002  He believes that by explaining the ability to ...
+16  hpr0002  You can customise the services running, whethe...
+>>> db.df[['name', 'sentence']][db.df.name == 'hpr0003']
+       name                                           sentence
+17  hpr0003  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...
+18  hpr0003  The conversations turns to Geocaching, and so ...
+19  hpr0003  Here the way is marked by reflectors that are ...
+20  hpr0003  Along the way we hear crickets, tales of wolve...
+21  hpr0003                                                   
+>>> db.search('lost haycon audio')
+                                                filename                                           sentence  line_number  ...  num_tokens     name  relevance
+694    /home/hobs/code/tangibleai/community/knowt/dat...  https://en.wikipedia.org/wiki/Audiobook  The I...           11  ...          51  hpr0334   0.459040
+2872   /home/hobs/code/tangibleai/community/knowt/dat...  https://fullcirclemagazine.org/category/podcas...           15  ...          24  hpr0832   0.466366
+20464  /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr2442 :: The sound of Woodbrook Quaker St...            1  ...          38  hpr2442   0.469391
+11606  /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr1683 :: Theater of the Imagination: Part...            1  ...          33  hpr1683   0.472739
+17232  /home/hobs/code/tangibleai/community/knowt/dat...  Last time I tried this, it very badly broke au...           17  ...          19  hpr2115   0.475144
+16     /home/hobs/code/tangibleai/community/knowt/dat...  You can customise the services running, whethe...            4  ...          41  hpr0002   0.480975
+32955  /home/hobs/code/tangibleai/community/knowt/dat...  Although this was not originally planned, the ...           16  ...          17  hpr3504   0.481747
+14901  /home/hobs/code/tangibleai/community/knowt/dat...  Special thanks to the following individuals fr...           10  ...          18  hpr1934   0.492067
+2873   /home/hobs/code/tangibleai/community/knowt/dat...  Unfortunately the interview with Laura was of ...           20  ...          14  hpr0832   0.495073
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1  ...          34  hpr0003   0.531724
+
+[10 rows x 9 columns]
+>>> db.search('what is haycon?')
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name  relevance
+19064  /home/hobs/code/tangibleai/community/knowt/dat...  It's a symlink farm manager that I use for pac...           24          24             1324   62          13  hpr2308   0.342432
+11461  /home/hobs/code/tangibleai/community/knowt/dat...  thistleweb sayings "   2014-12-31T17:30:00Z   ...          153         153             3322  123          26  hpr1675   0.354034
+38121  /home/hobs/code/tangibleai/community/knowt/dat...  It was purchased many years ago and is probabl...           11          11              539   68          14  hpr3842   0.358047
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003   0.363619
+11791  /home/hobs/code/tangibleai/community/knowt/dat...  The brewers escription of the beer may be foun...           31          31             5846  211          34  hpr1692   0.366179
+16     /home/hobs/code/tangibleai/community/knowt/dat...  You can customise the services running, whethe...            4           4              374  215          41  hpr0002   0.379300
+38122  /home/hobs/code/tangibleai/community/knowt/dat...  Picture 1  First front zip section [3:20] - I ...           12          12              607  183          42  hpr3842   0.401964
+11799  /home/hobs/code/tangibleai/community/knowt/dat...  Unfiltered Wheat Beer: There is a graphic of a...           34          34             6661  123          24  hpr1692   0.405953
+38123  /home/hobs/code/tangibleai/community/knowt/dat...  Unknown to me at the time these were Homeopath...           18          18              791   78          14  hpr3842   0.424322
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842   0.455222
+>>> db.search('what is Haycon?')
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name  relevance
+19064  /home/hobs/code/tangibleai/community/knowt/dat...  It's a symlink farm manager that I use for pac...           24          24             1324   62          13  hpr2308   0.342432
+11461  /home/hobs/code/tangibleai/community/knowt/dat...  thistleweb sayings "   2014-12-31T17:30:00Z   ...          153         153             3322  123          26  hpr1675   0.354034
+38121  /home/hobs/code/tangibleai/community/knowt/dat...  It was purchased many years ago and is probabl...           11          11              539   68          14  hpr3842   0.358047
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003   0.363619
+11791  /home/hobs/code/tangibleai/community/knowt/dat...  The brewers escription of the beer may be foun...           31          31             5846  211          34  hpr1692   0.366179
+16     /home/hobs/code/tangibleai/community/knowt/dat...  You can customise the services running, whethe...            4           4              374  215          41  hpr0002   0.379300
+38122  /home/hobs/code/tangibleai/community/knowt/dat...  Picture 1  First front zip section [3:20] - I ...           12          12              607  183          42  hpr3842   0.401964
+11799  /home/hobs/code/tangibleai/community/knowt/dat...  Unfiltered Wheat Beer: There is a graphic of a...           34          34             6661  123          24  hpr1692   0.405953
+38123  /home/hobs/code/tangibleai/community/knowt/dat...  Unknown to me at the time these were Homeopath...           18          18              791   78          14  hpr3842   0.424322
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842   0.455222
+>>> db.search('Haycon')
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name  relevance
+11791  /home/hobs/code/tangibleai/community/knowt/dat...  The brewers escription of the beer may be foun...           31          31             5846  211          34  hpr1692   0.336022
+38121  /home/hobs/code/tangibleai/community/knowt/dat...  It was purchased many years ago and is probabl...           11          11              539   68          14  hpr3842   0.344794
+11799  /home/hobs/code/tangibleai/community/knowt/dat...  Unfiltered Wheat Beer: There is a graphic of a...           34          34             6661  123          24  hpr1692   0.348866
+38122  /home/hobs/code/tangibleai/community/knowt/dat...  Picture 1  First front zip section [3:20] - I ...           12          12              607  183          42  hpr3842   0.349619
+38123  /home/hobs/code/tangibleai/community/knowt/dat...  Unknown to me at the time these were Homeopath...           18          18              791   78          14  hpr3842   0.359609
+11544  /home/hobs/code/tangibleai/community/knowt/dat...  Taiohae. handsome_pirate talks about his model...            3           3             1256    8           2  hpr1681   0.391125
+30996  /home/hobs/code/tangibleai/community/knowt/dat...                       NHI Shelterforce. Issue #76.            8           8              475   17           3  hpr3347   0.397706
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003   0.407969
+16     /home/hobs/code/tangibleai/community/knowt/dat...  You can customise the services running, whethe...            4           4              374  215          41  hpr0002   0.419814
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842   0.423453
+>>> db.search('Haycon', n_sentences=3)
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name  relevance
+5288   /home/hobs/code/tangibleai/community/knowt/dat...    ## hpr1049 :: OGG Camp 11: Laura Czajowksi, ...           11          11              244    2           1  hpr1048   0.346651
+30995  /home/hobs/code/tangibleai/community/knowt/dat...  Energy and Low-Income Housing: Part I Energy P...            8           8              407   67          15  hpr3347   0.348303
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003   0.348761
+30994  /home/hobs/code/tangibleai/community/knowt/dat...  Washington Whispers, U.S. News, Sunday, April ...            7           7              291  115          26  hpr3347   0.356728
+38123  /home/hobs/code/tangibleai/community/knowt/dat...  Unknown to me at the time these were Homeopath...           18          18              791   78          14  hpr3842   0.361986
+38120  /home/hobs/code/tangibleai/community/knowt/dat...  https://hackerpublicradio.org/requested_topics...            9           9              414  124          23  hpr3842   0.369891
+30996  /home/hobs/code/tangibleai/community/knowt/dat...  NHI Shelterforce. Issue #76. Retrieved from ht...            8           8              475   17           3  hpr3347   0.378292
+11544  /home/hobs/code/tangibleai/community/knowt/dat...  Taiohae. handsome_pirate talks about his model...            3           3             1256    8           2  hpr1681   0.379516
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842   0.410447
+38122  /home/hobs/code/tangibleai/community/knowt/dat...  Picture 1  First front zip section [3:20] - I ...           12          12              607  183          42  hpr3842   0.447569
+>>> db.search('Haycon', n_sentences=1)
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name  relevance
+23792  /home/hobs/code/tangibleai/community/knowt/dat...                                      That's North.           63          63             8679   13           4  hpr2757   0.350037
+18317  /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr2234 :: linux.conf.au 2017: Richard Jone...            1           1                0  163          32  hpr2234   0.363756
+37524  /home/hobs/code/tangibleai/community/knowt/dat...                                          LassPass.          145         145             5850    9           2  hpr3821   0.373613
+37527  /home/hobs/code/tangibleai/community/knowt/dat...                                          LassPass.          146         146             6003   10           3  hpr3821   0.373613
+37521  /home/hobs/code/tangibleai/community/knowt/dat...                                          LassPass.          143         143             5685    9           2  hpr3821   0.373613
+33821  /home/hobs/code/tangibleai/community/knowt/dat...  Hayfever (seasonal allergies):  MrX is taking ...           75          75             2733  346          66  hpr3594   0.413543
+30996  /home/hobs/code/tangibleai/community/knowt/dat...                                  NHI Shelterforce.            8           8              475   17           3  hpr3347   0.428962
+38122  /home/hobs/code/tangibleai/community/knowt/dat...  Picture 1  First front zip section [3:20] - I ...           12          12              607  183          42  hpr3842   0.434232
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842   0.464150
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003   0.551394
+>>> from sklearn.feature_extraction.text import TfidfVectorizer
+>>> tfidf = TfidfVectorizer()
+>>> tfidf = TfidfVectorizer(stopwords=False, lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+>>> tfidf = TfidfVectorizer(stop_words=False, lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+>>> tfidf.fit(db.df.sentence)
+>>> tfidf = TfidfVectorizer(stop_words=[], lowercase=False, min_df=1, max_df=.7, ngram_range=(1,1))
+>>> tfidf.fit(db.df.sentence)
+TfidfVectorizer(lowercase=False, max_df=0.7, stop_words=[])
+>>> vecs = tfidf.transform(db.df.sentence)
+>>> tfidf.vocabulary_.shape
+>>> len(tfidf.vocabulary_)
+70271
+>>> 'Haycon' in tfidf.vocabulary_
+True
+>>> tfidf.vocabulary_['Haycon']
+17376
+>>> tfidf.vocabulary_['haycon']
+>>> tfidf.df[tfidf.vocabulary_['Haycon']]
+>>> tfidf.vocabulary[tfidf.vocabulary_['Haycon']]
+>>> dir(tfidf)
+['__annotations__',
+ '__class__',
+ '__delattr__',
+ '__dict__',
+ '__dir__',
+ '__doc__',
+ '__eq__',
+ '__format__',
+ '__ge__',
+ '__getattribute__',
+ '__getstate__',
+ '__gt__',
+ '__hash__',
+ '__init__',
+ '__init_subclass__',
+ '__le__',
+ '__lt__',
+ '__module__',
+ '__ne__',
+ '__new__',
+ '__reduce__',
+ '__reduce_ex__',
+ '__repr__',
+ '__setattr__',
+ '__setstate__',
+ '__sizeof__',
+ '__sklearn_clone__',
+ '__str__',
+ '__subclasshook__',
+ '__weakref__',
+ '_build_request_for_signature',
+ '_char_ngrams',
+ '_char_wb_ngrams',
+ '_check_feature_names',
+ '_check_n_features',
+ '_check_params',
+ '_check_stop_words_consistency',
+ '_check_vocabulary',
+ '_count_vocab',
+ '_get_default_requests',
+ '_get_metadata_request',
+ '_get_param_names',
+ '_get_tags',
+ '_limit_features',
+ '_more_tags',
+ '_parameter_constraints',
+ '_repr_html_',
+ '_repr_html_inner',
+ '_repr_mimebundle_',
+ '_sort_features',
+ '_stop_words_id',
+ '_tfidf',
+ '_validate_data',
+ '_validate_ngram_range',
+ '_validate_params',
+ '_validate_vocabulary',
+ '_warn_for_unused_params',
+ '_white_spaces',
+ '_word_ngrams',
+ 'analyzer',
+ 'binary',
+ 'build_analyzer',
+ 'build_preprocessor',
+ 'build_tokenizer',
+ 'decode',
+ 'decode_error',
+ 'dtype',
+ 'encoding',
+ 'fit',
+ 'fit_transform',
+ 'fixed_vocabulary_',
+ 'get_feature_names_out',
+ 'get_metadata_routing',
+ 'get_params',
+ 'get_stop_words',
+ 'idf_',
+ 'input',
+ 'inverse_transform',
+ 'lowercase',
+ 'max_df',
+ 'max_features',
+ 'min_df',
+ 'ngram_range',
+ 'norm',
+ 'preprocessor',
+ 'set_fit_request',
+ 'set_params',
+ 'set_transform_request',
+ 'smooth_idf',
+ 'stop_words',
+ 'stop_words_',
+ 'strip_accents',
+ 'sublinear_tf',
+ 'token_pattern',
+ 'tokenizer',
+ 'transform',
+ 'use_idf',
+ 'vocabulary',
+ 'vocabulary_']
+>>> 1 / tfidf.idf[tfidf.vocabulary_['Haycon']]
+>>> tfidf.idf[tfidf.vocabulary_['Haycon']]
+>>> tfidf.idf_[tfidf.vocabulary_['Haycon']]
+10.9410723128634
+>>> tfidf.idf_[tfidf.vocabulary_['the']]
+1.7781904920469178
+>>> tfidf.idf_[tfidf.vocabulary_['Hobson']]
+10.535607204755234
+>>> max(tfidf.idf_.values())
+>>> max(tfidf.idf_)
+10.9410723128634
+>>> type(vecs)
+scipy.sparse._csr.csr_matrix
+>>> import scipy.io
+>>> scipy.io.mmwrite?
+>>> from scipy.sparse import save_npz
+>>> save_npz?
+>>> save_npz?
+>>> save_npz('tfidf_vectors.npz', vecs)
+>>> ls -hal
+>>> mv tfidf_vectors.npz .knowt-data/corpus_hpr/
+>>> # mv .knowt-data/corpus_hpr/tfidf_vectors.npz .knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors.npz
+>>> vecs.shape
+(41531, 70271)
+>>> mv .knowt-data/corpus_hpr/tfidf_vectors.npz .knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors_41531x70271.npz
+>>> import joblib
+>>> joblib.dump?
+>>> joblib.dump(tfidf, '.knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors_41531x70271.joblib')
+['.knowt-data/corpus_hpr/tfidf_1gram_casesensitive_vectors_41531x70271.joblib']
+>>> ls -hal
+>>> ls -hal .knowt-data/corpus_hpr/
+>>> tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=1, max_df=.7, ngram_range=(3,3))
+>>> tfidf.fit(db.df.sentence)
+TfidfVectorizer(analyzer='char', lowercase=False, max_df=0.7,
+                ngram_range=(3, 3), stop_words=[])
+>>> vecs = tfidf.transform(db.df.sentence)
+>>> len(tfidf.vocabulary_)
+88369
+>>> tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=0, max_df=1.0, ngram_range=(3,3))
+>>> tfidf.fit(db.df.sentence)
+>>> tfidf = TfidfVectorizer(stop_words=[], analyzer='char', lowercase=False, min_df=0.0, max_df=1.0, ngram_range=(3,3))
+>>> tfidf.fit(db.df.sentence)
+TfidfVectorizer(analyzer='char', lowercase=False, min_df=0.0,
+                ngram_range=(3, 3), stop_words=[])
+>>> vecs = tfidf.transform(db.df.sentence)
+>>> len(tfidf.vocabulary_)
+88369
+>>> hay = tfidf.transform('Haycon')
+>>> hay = tfidf.transform(['Haycon'])
+>>> dots = hay.dot(vecs)
+>>> dots = hay.dot(vecs.T)
+>>> dots.argmax()
+17
+>>> db.df.iloc[17]
+filename           /home/hobs/code/tangibleai/community/knowt/dat...
+sentence           ## hpr0003 :: Lost Haycon Audio    It's 12:10A...
+line_number                                                        1
+line_start                                                         1
+sent_start_char                                                    0
+len                                                              156
+num_tokens                                                        34
+name                                                         hpr0003
+Name: 17, dtype: object
+>>> ind = np.argpartition(dots, -10)[-10:]
+>>> ind = np.argpartition?
+>>> dots.shape
+(1, 41531)
+>>> ind = np.argpartition(dots.flatten(), -10)[-10:]
+>>> ind = np.argpartition(dots.todense().flatten(), -10)[-10:]
+>>> db.df.iloc[ind]
+>>> ind
+matrix([[19229, 20765, 41528, ..., 16212,  4561, 41413]])
+>>> ind = np.argpartition(dots.todense().toarray().flatten(), -10)[-10:]
+>>> dots = dots.todense()
+>>> dots = dots.flatten()
+>>> dots.shape
+(1, 41531)
+>>> dots = dots.flat
+>>> dots
+<numpy.flatiter at 0x55de27002670>
+>>> dots = np.array(dots)
+>>> dots
+array([0.        , 0.        , 0.        , ..., 0.        , 0.00431091,
+       0.        ])
+>>> ind = np.argpartition(dots, -10)[-10:]
+>>> df.iloc[ind]
+>>> db.df.iloc[ind]
+                                                filename                                           sentence  line_number  line_start  sent_start_char  len  num_tokens     name
+3618   /home/hobs/code/tangibleai/community/knowt/dat...  So a boycott was started on reddit, which took...          131         131             6724   85          17  hpr0899
+20397  /home/hobs/code/tangibleai/community/knowt/dat...  Comment 1: Aaron on 2017-11-06: "Haystack pass...          208         208             2175   98          35  hpr2436
+16215  /home/hobs/code/tangibleai/community/knowt/dat...  Now we use xmodmap to reassign keycode 65 to m...           12          12             1323  119          28  hpr2024
+3195   /home/hobs/code/tangibleai/community/knowt/dat...  Other hardware engineers were Dave Haynie and ...           43          43             5351  109          21  hpr0870
+14746  /home/hobs/code/tangibleai/community/knowt/dat...               https://www.derbycon.com/talks-2011/            4           4             1253   40           3  hpr1918
+38124  /home/hobs/code/tangibleai/community/knowt/dat...  Despite this they seems to have cured my Hay f...           19          19              870   51          11  hpr3842
+17     /home/hobs/code/tangibleai/community/knowt/dat...  ## hpr0003 :: Lost Haycon Audio    It's 12:10A...            1           1                0  156          34  hpr0003
+16212  /home/hobs/code/tangibleai/community/knowt/dat...  First you need to find the keycode for your sp...            3           3              793   54          12  hpr2024
+4561   /home/hobs/code/tangibleai/community/knowt/dat...  A founder member of Wray Com Com in 2003 (http...           24          24             1618  127          21  hpr0980
+41413  /home/hobs/code/tangibleai/community/knowt/dat...                      A, pw] control_key = Keycode.          158         158             4619   29           9  hpr4028
+>>> ind = np.array(zip(dots[ind], ind))
+>>> ind.sort()
+>>> sorted(ind)
+>>> ind
+array(<zip object at 0x7f944d089bc0>, dtype=object)
+>>> ind = list(ind)
+>>> ind[0]
+>>> ind
+array(<zip object at 0x7f944d089bc0>, dtype=object)
+>>> ind.shape
+()
+>>> ind = np.argpartition(dots, -10)[-10:]
+>>> maxdots = list(zip(dots[np.array(ind.todense().flat)], ind.todense().flat))
+>>> ind
+array([ 3618, 20397, 16215,  3195, 14746, 38124,    17, 16212,  4561,
+       41413])
+>>> maxdots = list(zip(dots[ind].flat, ind))
+>>> maxdots
+[(0.09478985584423921, 3618),
+ (0.10377468859328683, 20397),
+ (0.10536565753515216, 16215),
+ (0.10755520644692801, 3195),
+ (0.1387178380102396, 14746),
+ (0.1898120000847556, 38124),
+ (0.46802872975033943, 17),
+ (0.12404309670508715, 16212),
+ (0.13757293215589855, 4561),
+ (0.12245310787735718, 41413)]
+>>> sorted(maxdots)
+[(0.09478985584423921, 3618),
+ (0.10377468859328683, 20397),
+ (0.10536565753515216, 16215),
+ (0.10755520644692801, 3195),
+ (0.12245310787735718, 41413),
+ (0.12404309670508715, 16212),
+ (0.13757293215589855, 4561),
+ (0.1387178380102396, 14746),
+ (0.1898120000847556, 38124),
+ (0.46802872975033943, 17)]
+>>> hist -o -p -f scripts/hpr_find_haycon_bert_tfidf_trigram.hist.ipy

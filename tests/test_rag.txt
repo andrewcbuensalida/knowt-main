@@ -1,0 +1,30 @@
+>>  from knowt.llm import RAG
+>>  from knowt.constants import CORPUS_HPR, CORPUS_NUTRITION
+>>  from knowt.search import VectorDB
+
+>>  rag = RAG(min_relevance=.5)  # (`db=CORPUS_HPR`)
+>>  q = 'Explain phone phreaking to me'
+>>  kwds = 'phreak teleph experi'.split()
+>>  ans = rag.ask(q)
+>>  for t in kwds:
+>>      assert t in ans.lower(), f"{t} not found in {ans.lower()}"
+
+ans[:69] = 'Phreaking is the practice of studying, experimenting with, or explori'
+
+>>  rag = RAG(db=CORPUS_NUTRITION)
+>>  q = 'What is the healthiest fruit?'
+>>  kwds = 'glycemic diabetes fat coconut raw'.split() + ['organic berries']
+>>  ans = rag.ask(q)
+>>  for t in kwds:
+>>      assert t in ans.lower(), f"{t} not found in {ans.lower()}"
+
+ans[:69] = 'The healthiest fruits recommended for people with diabetes and glycem'
+
+>>  q = 'How much exercise is healthiest?'
+>>  kwds = 'exercis healthy'.split() + ['not specified']
+>>  ans = rag.ask(q)
+>>  for t in kwds:
+>>      assert t in ans.lower(), f"{t} not found in {ans.lower()}"
+
+ans[:69] = 'The amount of exercise that is healthy for an individual is not speci'
+"""
