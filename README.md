@@ -20,6 +20,8 @@ exit and save
 git clone <https url>
 might have to enter username and password
 
+test
+
 # Knowt
 ![pypi](https://img.shields.io/pypi/v/knowt.svg)
 ![versions](https://img.shields.io/pypi/pyversions/knowt.svg)
