@@ -1,5 +1,12 @@
-# To clone a repo in GitLab
-## the ssh way
+# Knowt
+Knowt turns notes into knowledge.
+You can search your notes for the name of that person you saw at the cafe last week or even have a conversation with your past self about anything at all.
+It won't write your term paper for you, or draw you dreamy pictures, but it will help you remember the important things, the things that your favorite humans wrote down.
+![pypi](https://img.shields.io/pypi/v/knowt.svg)
+![versions](https://img.shields.io/pypi/pyversions/knowt.svg)
+
+## To clone a repo in GitLab
+### the ssh way
 in git bash, run
 ssh-keygen
 then accept all default
@@ -16,20 +23,9 @@ uncomment Host *
 uncomment IdentityFile ~/.ssh/test
 exit and save
 
-## the https way
+### the https way
 git clone <https url>
 might have to enter username and password
-
-test
-
-# Knowt
-![pypi](https://img.shields.io/pypi/v/knowt.svg)
-![versions](https://img.shields.io/pypi/pyversions/knowt.svg)
-
-
-Knowt turns notes into knowledge.
-You can search your notes for the name of that person you saw at the cafe last week or even have a conversation with your past self about anything at all.
-It won't write your term paper for you, or draw you dreamy pictures, but it will help you remember the important things, the things that your favorite humans wrote down.
 
 ## Getting started
 My favorite humans these days are on open source communities like Hacker Public Radio.
@@ -75,6 +71,11 @@ Now that you have a virtual environment, you're ready to install some Python pac
 
 1. Install the required packages using the `requirements.txt` file:
 
+```bash
+python -m pip install -e .
+```
+This will use pyproject.toml to install dependencies
+Not this
 ```bash
 python -m pip install -r requirements.txt
 ```
