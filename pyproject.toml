@@ -53,6 +53,7 @@ vaex = ["vaex>=4.17.0,<4.18"]
 dask = ["dask"]
 all = ["test", "ann", "llm", "spacy", "vaex", "dask"]
 
+# this allows us to run knowt in the command line
 [project.scripts]
 knowt = "knowt.search:main"
 ask = "knowt.llm:main"

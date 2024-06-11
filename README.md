@@ -32,12 +32,6 @@ My favorite humans these days are on open source communities like Hacker Public 
 So `knowt` comes with all the show notes from every on of the 4,000+ HPR episodes recorded in its 15+ years of cointinuous broadcasting.
 What questions do you have for the 100s of agalmic contributors to HPR?
 
-<!-- ```bash
-$ pip install -e .
-$ knowt what is Haycon?
-``` -->
-
-
 ## Installation
 
 #### Python virtual environment
@@ -49,8 +43,7 @@ To set up the project environment, follow these steps:
 3. Create a Python virtual environment in the project directory:
 
 ```bash
-pip install virtualenv
-python -m virtualenv .venv
+python -m venv .venv
 ```
 
 4. Activate the virtual environment (mac/linux):
@@ -64,6 +57,12 @@ For Windows
 .venv\Scripts\activate.bat
 ```
 
+In the future, to deactivate venv
+```bash
+.venv\Scripts\deactivate.bat 
+```
+
+
 
 #### Install dependencies
 
@@ -74,7 +73,7 @@ Now that you have a virtual environment, you're ready to install some Python pac
 ```bash
 python -m pip install -e .
 ```
-This will use pyproject.toml to install dependencies
+This will use pyproject.toml to install dependencies. -e so any change in source code will pop-up in project. After running this, we can call knowt in the cli in vs code. This creates the knowt.egg-info folder? The old way is through setup.py.
 Not this
 ```bash
 python -m pip install -r requirements.txt
